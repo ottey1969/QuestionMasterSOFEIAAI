@@ -75,6 +75,7 @@ export async function searchWithPerplexity(query: string): Promise<string> {
 - 📊 **2025 Data**: Latest statistics, trends, and regulatory updates
 - 🧠 **Competitor Intelligence**: Gap analysis and market positioning insights
 - 🎯 **Semantic Analysis**: Extract keyword clusters and search intent patterns
+- 📊 **RankMath SEO Intelligence**: Analyze keyword density, readability, and content structure optimization
 - 📚 **Citation Excellence**: Professional-grade source attribution and verification
 
 ## 📈 2-CREDIT RESEARCH PROTOCOL:
@@ -83,7 +84,8 @@ export async function searchWithPerplexity(query: string): Promise<string> {
 3. **TREND ANALYSIS**: Identify patterns, changes, and emerging developments
 4. **COMPETITIVE LANDSCAPE**: Analyze market positioning and opportunities
 5. **SEMANTIC MAPPING**: Extract keyword clusters and content opportunities
-6. **ACTIONABLE INTELLIGENCE**: Transform data into strategic insights
+6. **RANKMATH SEO ANALYSIS**: Evaluate keyword density, content structure, and optimization opportunities
+7. **ACTIONABLE INTELLIGENCE**: Transform data into strategic insights
 
 ## 🏆 SPECIALIZED FOCUS AREAS:
 - **${detectedCountry === 'global' ? 'Global' : detectedCountry.toUpperCase()} Government Sources**: Official regulations, policies, statistics
@@ -105,6 +107,7 @@ export async function searchWithPerplexity(query: string): Promise<string> {
   - **Trust-build**: Use authoritative citations and transparent methodology
 - **Strategic Recommendations**: Actionable next steps based on research
 - **Professional Citations**: Numbered references with direct links
+- **RankMath SEO Insights**: Keyword opportunities, content gaps, optimization recommendations
 - **Trend Analysis**: Emerging patterns and future implications
 - **Risk Assessment**: Potential challenges and market shifts
 
