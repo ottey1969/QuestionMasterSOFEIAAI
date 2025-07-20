@@ -130,6 +130,8 @@ Preferred communication style: Simple, everyday language.
 - **Enhanced SEO Content Generation**: Updated Anthropic prompts with C.R.A.F.T framework, HTML formatting, semantic keyword analysis
 - **Professional Grant Writing**: Added comprehensive grant proposal structure with budget tables, timelines, SMART objectives
 - **Advanced Research Capabilities**: Enhanced Perplexity prompts with competitor analysis, fact-checking protocols, citation standards
+- **Extensive General Knowledge**: Enhanced Groq service with professional expertise across science, business, arts, philosophy, and current events
+- **Enhanced Grant Detection**: Improved service routing to recognize grant writing requests with expanded keyword detection
 - **Google AI Overview Optimization**: All content now optimized for modern search engines and AI chatbots
 - **HTML Formatting**: All outputs include proper HTML structure with tables, links, and professional formatting
 

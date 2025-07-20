@@ -111,7 +111,8 @@ Always use formal, professional language with clear structure, evidence-based ar
       ],
     });
 
-    return response.content[0].text || "I couldn't generate content. Please try again.";
+    const firstContent = response.content[0];
+    return (firstContent && 'text' in firstContent) ? firstContent.text : "I couldn't generate content. Please try again.";
   } catch (error: any) {
     console.error('Anthropic API error:', error);
     throw new Error(`Failed to generate content with Anthropic: ${error.message}`);

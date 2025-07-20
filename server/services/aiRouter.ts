@@ -129,7 +129,16 @@ export function detectServiceType(message: string): ServiceType {
   
   // Check for grant writing indicators
   if (lowerMessage.includes('grant') || lowerMessage.includes('proposal') || 
-      lowerMessage.includes('funding') || lowerMessage.includes('write proposal')) {
+      lowerMessage.includes('funding') || lowerMessage.includes('write proposal') ||
+      lowerMessage.includes('grant proposal') || lowerMessage.includes('grant writing') ||
+      lowerMessage.includes('funding application') || lowerMessage.includes('scholarship') ||
+      lowerMessage.includes('research proposal') || lowerMessage.includes('project proposal') ||
+      lowerMessage.includes('budget') || lowerMessage.includes('timeline') ||
+      lowerMessage.includes('objectives') || lowerMessage.includes('methodology') ||
+      lowerMessage.includes('impact assessment') || lowerMessage.includes('sustainability plan') ||
+      lowerMessage.includes('executive summary') || lowerMessage.includes('foundation') ||
+      lowerMessage.includes('non-profit') || lowerMessage.includes('ngo') ||
+      lowerMessage.includes('charity') || lowerMessage.includes('donation')) {
     return 'grant';
   }
   
