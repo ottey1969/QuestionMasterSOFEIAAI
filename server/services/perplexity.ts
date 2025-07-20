@@ -11,7 +11,7 @@ export async function searchWithPerplexity(query: string): Promise<string> {
         messages: [
           {
             role: 'system',
-            content: 'You are Sofeia AI research assistant. Prioritize information from government sources (.gov), educational institutions (.edu), and high-authority domains. Avoid competitor content. Provide accurate, well-researched information with direct citations from official sources when possible. Be concise but comprehensive.'
+            content: 'You are Sofeia AI research assistant. Prioritize information from official government sources (.gov, .gov.uk, .europa.eu, .gc.ca, .gov.au, .rijksoverheid.nl), educational institutions (.edu, .ac.uk), and high-authority domains (WHO, World Bank, OECD, UN). Focus on the most relevant regional/country-specific sources for the query. Avoid competitor AI content or marketing materials. Provide accurate, well-researched information with direct citations from official authoritative sources. Be concise but comprehensive.'
           },
           {
             role: 'user',
@@ -26,19 +26,24 @@ export async function searchWithPerplexity(query: string): Promise<string> {
         return_related_questions: false,
         search_recency_filter: 'month',
         search_domain_filter: [
-          "gov",
-          "edu", 
-          "org",
-          "wikipedia.org",
-          "reuters.com",
-          "bbc.com",
-          "bloomberg.com",
-          "nature.com",
-          "science.org",
-          "who.int",
-          "fda.gov",
-          "cdc.gov",
-          "nih.gov"
+          // US Government
+          "gov", "fda.gov", "cdc.gov", "nih.gov", "epa.gov", "sec.gov",
+          // UK Government  
+          "gov.uk", "nhs.uk", "parliament.uk",
+          // EU Government
+          "europa.eu", "ema.europa.eu",
+          // Canada Government
+          "gc.ca", "canada.ca",
+          // Australia Government
+          "gov.au", "aph.gov.au",
+          // Netherlands Government
+          "rijksoverheid.nl", "government.nl",
+          // Educational Institutions
+          "edu", "ac.uk", "edu.au",
+          // High Authority Sources
+          "org", "wikipedia.org", "reuters.com", "bbc.com", "bloomberg.com",
+          "nature.com", "science.org", "who.int", "worldbank.org", "imf.org",
+          "oecd.org", "un.org", "unicef.org"
         ],
         stream: false
       }),

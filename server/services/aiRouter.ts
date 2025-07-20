@@ -104,7 +104,10 @@ export function detectServiceType(message: string): ServiceType {
       lowerMessage.includes('news') || lowerMessage.includes('current') ||
       lowerMessage.includes('government') || lowerMessage.includes('official') ||
       lowerMessage.includes('statistics') || lowerMessage.includes('data') ||
-      lowerMessage.includes('study') || lowerMessage.includes('report')) {
+      lowerMessage.includes('study') || lowerMessage.includes('report') ||
+      lowerMessage.includes('policy') || lowerMessage.includes('regulation') ||
+      lowerMessage.includes('law') || lowerMessage.includes('legal') ||
+      lowerMessage.includes('country') || lowerMessage.includes('national')) {
     return 'research';
   }
   
