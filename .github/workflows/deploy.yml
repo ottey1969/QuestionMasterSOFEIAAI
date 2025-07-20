@@ -1,0 +1,97 @@
+name: Deploy Sofeia AI Agent
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggers
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Build
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: TypeScript check
+      run: npm run check
+    
+    - name: Build application  
+      run: npm run build
+    
+    - name: Test build artifacts
+      run: |
+        test -f dist/index.js || exit 1
+        test -d dist/public || exit 1
+        echo "✅ Build artifacts verified"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    name: Deploy to Production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Render
+      uses: johnbeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
+        wait-for-success: true
+        
+    - name: Deployment Success Notification
+      if: success()
+      run: |
+        echo "🚀 Sofeia AI Agent deployed successfully!"
+        echo "🔗 App URL: https://sofeia-ai-agent.onrender.com"
+        echo "🔑 Admin Panel: https://sofeia-ai-agent.onrender.com/admin"
+        echo "💳 PayPal: https://paypal.me/ojgmedia"
+        
+    - name: Deployment Failure Notification  
+      if: failure()
+      run: |
+        echo "❌ Deployment failed!"
+        echo "📞 Contact: +31 628 073 996 (WhatsApp)"
+
+  health-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    name: Health Check
+    
+    steps:
+    - name: Wait for deployment
+      run: sleep 30
+      
+    - name: Health check
+      run: |
+        response=$(curl -s -o /dev/null -w "%{http_code}" https://sofeia-ai-agent.onrender.com/health)
+        if [ $response -eq 200 ]; then
+          echo "✅ Health check passed"
+        else
+          echo "❌ Health check failed (HTTP $response)"
+          exit 1
+        fi
+        
+    - name: Test API endpoints
+      run: |
+        # Test WebSocket endpoint exists
+        curl -f https://sofeia-ai-agent.onrender.com/api/status || exit 1
+        
+        # Test admin endpoint (should require auth)  
+        curl -s https://sofeia-ai-agent.onrender.com/admin | grep -q "Admin" || exit 1
+        
+        echo "✅ API endpoints responding"

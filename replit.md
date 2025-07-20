@@ -109,6 +109,17 @@ Preferred communication style: Simple, everyday language.
 - `ADMIN_KEY`: Admin panel access for credit management
 - `ADMIN_IP_ADDRESS`: Founder's IP (112.198.165.82) for unlimited access
 
+## Recent Changes (January 2025)
+
+### Version 2.0 Professional Update
+- **Professional Credit Purchase System**: Added €35/month (150 questions) and €300/month (1500 questions) pricing cards with bordeaux styling
+- **Comprehensive Loading States**: Progressive loading messages from button click to chat screen with service-specific animations  
+- **Enhanced PayPal Integration**: Direct links to https://paypal.me/ojgmedia with streamlined purchase flow
+- **Professional Button Layout**: WhatsApp and PayPal buttons aligned on same line with equal spacing and consistent card heights
+- **Automatic IP Detection**: Real-time IP detection using ipapi.co with fallback to ipify
+- **Complete GitHub Deployment Package**: Updated deployment files including GITHUB_DEPLOYMENT.md, render.yaml, GitHub Actions workflow, and comprehensive README
+- **Environment Template**: Added detailed .env.example with comprehensive configuration instructions
+
 ## Deployment Strategy
 
 ### Development
