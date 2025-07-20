@@ -42,6 +42,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 # Get your IP address
 curl ifconfig.me
+# Example: 112.198.165.82
 ```
 
 ## Quick Commands

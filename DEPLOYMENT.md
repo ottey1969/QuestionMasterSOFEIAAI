@@ -119,6 +119,11 @@ curl ifconfig.me
 ```
 Set this as ADMIN_IP_ADDRESS for unlimited access
 
+**Example for Ottmar Francisca:**
+```env
+ADMIN_IP_ADDRESS=112.198.165.82
+```
+
 ## Step 5: Deploy
 
 1. **Initial Deploy**:

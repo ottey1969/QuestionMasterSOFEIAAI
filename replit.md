@@ -106,6 +106,8 @@ Preferred communication style: Simple, everyday language.
 - `GROQ_API_KEY`: Groq AI service
 - `PERPLEXITY_API_KEY`: Perplexity research service
 - `ANTHROPIC_API_KEY`: Claude AI service
+- `ADMIN_KEY`: Admin panel access for credit management
+- `ADMIN_IP_ADDRESS`: Founder's IP (112.198.165.82) for unlimited access
 
 ## Deployment Strategy
 
