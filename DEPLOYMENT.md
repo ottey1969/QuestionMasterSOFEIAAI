@@ -80,6 +80,8 @@ PAYPAL_CLIENT_ID=<your-paypal-client-id>
 PAYPAL_CLIENT_SECRET=<your-paypal-client-secret>
 ```
 
+> **Note**: All API keys should be production-ready. The app features real-time chat with WebSocket support, HTML-formatted responses with copy functionality, and proper loading states for enhanced user experience.
+
 ### How to get API keys:
 
 - **Groq**: https://console.groq.com/keys (free tier available)
@@ -130,9 +132,11 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
 2. **Test AI Services**:
    - Try different message types:
-     - "What is artificial intelligence?" (should use Groq)
-     - "Research the latest AI news" (should use Perplexity)
-     - "Create SEO content about AI" (should use Anthropic)
+     - "What is artificial intelligence?" (should use Groq - 1 credit)
+     - "Write me a blog post about contentscale" (should use Perplexity + Anthropic - 2 credits)
+     - "Help me with grant writing for AI research" (should use Anthropic - 3 credits)
+   - Verify HTML formatting with headings, bullets, and copy buttons work
+   - Check that "Sofeia AI is thinking..." loading states appear
 
 ## Troubleshooting
 
@@ -213,3 +217,4 @@ If you encounter issues:
 2. Review application logs in Render dashboard
 3. Test API keys individually
 4. Contact: +31 628 073 996 (WhatsApp)
+5. Support: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US

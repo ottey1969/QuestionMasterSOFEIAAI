@@ -6,11 +6,12 @@ The world's most advanced autonomous AI system, combining multi-agent reasoning,
 
 - **Multi-AI Integration**: Powered by Groq, Perplexity, and Anthropic APIs
 - **Intelligent Routing**: Automatically selects the best AI service based on query type
-- **Real-time Chat**: WebSocket-based communication for instant responses
+- **Real-time Chat**: WebSocket-based communication with loading states
+- **Professional Formatting**: HTML-rendered responses with headings, bullets, and copy functions
 - **Three Specialized Services**:
-  - General Questions (Groq Mixtral-8x7B)
-  - Research & Search (Perplexity Llama-3.1-Sonar)
-  - Content & Grant Writing (Anthropic Claude-4-Sonnet)
+  - General Questions (Groq llama3-8b-8192) - 1 credit
+  - SEO & AI Content (Perplexity + Anthropic Claude-4-Sonnet) - 2 credits
+  - Grant Writing (Anthropic Claude-4-Sonnet) - 3 credits
 
 ## Tech Stack
 
@@ -108,6 +109,7 @@ See detailed deployment guide in `DEPLOYMENT.md`.
 
 ## Contact
 
-- WhatsApp: +31 628 073 996
-- Website: [Your Domain]
-- Email: [Your Email]
+- **Founder/CEO**: Ottmar Francisca
+- **WhatsApp**: +31 628 073 996
+- **Support**: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US
+- **Website**: Deploy to your domain via Render/Vercel/Netlify

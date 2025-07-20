@@ -1,70 +1,51 @@
 # Quick Deployment Guide
 
-Your Sofeia AI platform is ready for deployment! Here's the simplest way to get it online:
+## One-Click Deploy Options
 
-## Method 1: Render (Recommended - Free Tier Available)
+### Deploy to Render (Recommended)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/sofeia-ai)
 
-### Step 1: Push to GitHub
-```bash
-git init
-git add .
-git commit -m "Sofeia AI platform ready for deployment"
-git branch -M main
-git remote add origin https://github.com/YourUsername/sofeia-ai.git
-git push -u origin main
+### Deploy to Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/sofeia-ai)
+
+### Deploy to Netlify
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/yourusername/sofeia-ai)
+
+## Environment Variables Required
+
+```env
+DATABASE_URL=postgresql://username:password@host:port/database
+SESSION_SECRET=your-random-64-char-secret
+GROQ_API_KEY=gsk_...
+PERPLEXITY_API_KEY=pplx-...
+ANTHROPIC_API_KEY=sk-ant-...
+PAYPAL_CLIENT_ID=your-paypal-client-id
+PAYPAL_CLIENT_SECRET=your-paypal-client-secret
 ```
 
-### Step 2: Deploy on Render
-1. Go to https://render.com and create account
-2. Click "New +" → "Web Service"
-3. Connect your GitHub repository
-4. Configure:
-   - **Build Command**: `vite build && npx esbuild server/index.ts --bundle --platform=node --target=node18 --outfile=dist/index.js --external:better-sqlite3 --external:sqlite3 --external:pg-native --format=esm --packages=external`
-   - **Start Command**: `node dist/index.js`
+## Get API Keys
 
-### Step 3: Add Environment Variables
-In Render dashboard, add these environment variables:
-- `NODE_ENV=production`
-- `DATABASE_URL` (get from Render PostgreSQL)
-- `SESSION_SECRET` (generate random 64-char string)
-- `GROQ_API_KEY` (from console.groq.com)
-- `PERPLEXITY_API_KEY` (from perplexity.ai/settings/api)
-- `ANTHROPIC_API_KEY` (from console.anthropic.com)
-- `PAYPAL_CLIENT_ID` & `PAYPAL_CLIENT_SECRET` (from developer.paypal.com)
+1. **Groq** (Free): https://console.groq.com/keys
+2. **Perplexity** (Paid): https://www.perplexity.ai/settings/api
+3. **Anthropic** (Free tier): https://console.anthropic.com/
+4. **PayPal** (Free): https://developer.paypal.com/
 
-### Step 4: Create Database
-- In Render: New → PostgreSQL
-- Copy connection URL to `DATABASE_URL` variable
+## Features Included
 
-## Method 2: Replit Deployment (One-Click)
+✅ Real-time WebSocket chat  
+✅ HTML-formatted AI responses  
+✅ Copy buttons for text/HTML output  
+✅ Loading states with "Sofeia AI is thinking..."  
+✅ Three specialized AI services  
+✅ Responsive design  
+✅ PayPal donation integration  
 
-1. In your Replit project, click "Deploy" tab
-2. Choose "Autoscale" deployment
-3. Add environment variables (same as above)
-4. Click "Deploy"
+## Support
 
-## Working Features Right Now:
+- **Founder**: Ottmar Francisca
+- **WhatsApp**: +31 628 073 996
+- **Donate**: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US
 
-✅ **General Questions** - Groq API (working perfectly)
-✅ **Research Queries** - Perplexity API (needs valid key)
-⚠️ **Grant Writing & SEO** - Anthropic API (needs valid API key)
+---
 
-## Current Status:
-- Your platform has intelligent AI routing
-- Groq responses work immediately for general questions
-- Grant writing will fallback to Groq if Anthropic key issues persist
-- Real-time WebSocket chat is fully functional
-- PayPal integration ready for credit purchases
-
-## Get API Keys:
-- **Groq**: https://console.groq.com/keys (Free tier: 14,400 requests/day)
-- **Perplexity**: https://www.perplexity.ai/settings/api ($5 minimum)
-- **Anthropic**: https://console.anthropic.com/ (Free tier: $5 credit)
-
-## Test Your Deployment:
-Try these messages after deployment:
-1. "What is artificial intelligence?" → Should use Groq
-2. "Research latest AI news" → Should use Perplexity
-3. "Write a grant proposal" → Should use Anthropic or fallback to Groq
-
-Your platform is production-ready with real AI capabilities!
+© 2025 Sofeia AI Agent • The world's most advanced autonomous AI system
