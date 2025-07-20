@@ -1,0 +1,34 @@
+SOFEIA AI AGENT - GITHUB DEPLOYMENT PACKAGE
+=========================================
+
+This deployment package contains everything needed to deploy Sofeia AI Agent to any platform.
+
+INCLUDED FILES:
+- Complete source code (client/, server/, shared/)
+- Deployment configurations (render.yaml, Dockerfile, docker-compose.yml)
+- GitHub Actions workflow (.github/workflows/deploy.yml)
+- Comprehensive documentation (README.md, GITHUB_DEPLOYMENT.md)
+- Environment template (.env.example)
+- All configuration files (package.json, tsconfig.json, etc.)
+
+DEPLOYMENT OPTIONS:
+1. Render.com - Use render.yaml for one-click deploy
+2. Docker - Use Dockerfile and docker-compose.yml
+3. GitHub Actions - Automated CI/CD with deploy.yml
+4. Manual deployment - Follow GITHUB_DEPLOYMENT.md
+
+FOUNDER: Ottmar Francisca
+WHATSAPP: +31 628 073 996
+PAYPAL: https://paypal.me/ojgmedia
+ADMIN IP: 112.198.165.82 (unlimited access)
+
+COPYRIGHT: © 2025 Sofeia AI Agent
+LICENSE: MIT
+
+Quick Start:
+1. Extract this archive to your project directory
+2. Copy .env.example to .env and add your API keys
+3. Follow GITHUB_DEPLOYMENT.md for complete setup instructions
+4. Deploy using your preferred platform
+
+The application includes professional credit purchase system, multi-AI integration (Groq, Perplexity, Anthropic), and comprehensive loading states for production use.
