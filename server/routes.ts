@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
 import { extractSecurityInfo, generateFingerprint } from "./services/security";
+import { processAIRequest, detectServiceType, formatAIResponse, type AIRequest } from "./services/aiRouter";
 import { z } from "zod";
 
 // Validation schemas
@@ -27,13 +28,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const message = JSON.parse(data.toString());
         console.log('WebSocket message received:', message);
         
-        // Echo back any message for testing
+        // Process AI chat messages
         if (message.type === 'chat') {
-          ws.send(JSON.stringify({ 
-            type: 'response', 
-            content: `Echo: ${message.content}`,
-            timestamp: new Date().toISOString()
-          }));
+          try {
+            const serviceType = detectServiceType(message.content);
+            const aiRequest: AIRequest = {
+              type: serviceType,
+              content: message.content
+            };
+            
+            const result = await processAIRequest(aiRequest);
+            const formattedResponse = formatAIResponse(result.response, result.service, result.creditsUsed);
+            
+            ws.send(JSON.stringify({ 
+              type: 'response', 
+              content: formattedResponse,
+              timestamp: new Date().toISOString(),
+              service: result.service,
+              creditsUsed: result.creditsUsed
+            }));
+          } catch (error: any) {
+            console.error('AI processing error:', error);
+            ws.send(JSON.stringify({ 
+              type: 'error', 
+              content: `Sorry, I encountered an error: ${error.message}`,
+              timestamp: new Date().toISOString()
+            }));
+          }
         }
       } catch (error) {
         console.error('WebSocket message error:', error);
@@ -76,25 +97,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await capturePaypalOrder(req, res);
   });
 
-  // Simple chat endpoint (no authentication required)
+  // AI chat endpoint with intelligent routing
   app.post('/api/chat/message', async (req, res) => {
     try {
       const { message, sessionId } = messageSchema.parse(req.body);
       
-      // Simple echo response for now - can be enhanced with AI later
-      const response = `I received your message: "${message}". This is a simple chat response that will be enhanced with AI capabilities.`;
+      // Detect service type and process with appropriate AI
+      const serviceType = detectServiceType(message);
+      const aiRequest: AIRequest = {
+        type: serviceType,
+        content: message
+      };
+      
+      const result = await processAIRequest(aiRequest);
+      const formattedResponse = formatAIResponse(result.response, result.service, result.creditsUsed);
       
       res.json({ 
-        response,
+        response: formattedResponse,
         sessionId,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        service: result.service,
+        creditsUsed: result.creditsUsed
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: error.errors[0].message });
       }
-      console.error("Chat error:", error);
-      res.status(500).json({ message: "Failed to process message" });
+      console.error("AI chat error:", error);
+      res.status(500).json({ message: `Failed to process message: ${error.message}` });
     }
   });
 

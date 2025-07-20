@@ -13,89 +13,50 @@ const DEFAULT_MODEL_STR = "claude-sonnet-4-20250514";
 // </important_do_not_delete>
 
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY_ENV_VAR || "default_key",
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export async function generateSEOContent(researchData: string, contentType: string, targetKeywords: string): Promise<string> {
-  const prompt = `Using the following research data, create SEO-optimized content following Julia McCoy's C.R.A.F.T framework:
-
-Research Data:
-${researchData}
-
-Content Type: ${contentType}
-Target Keywords: ${targetKeywords}
-
-Requirements:
-- Cut the fluff – be concise and to the point
-- Review and optimize for clarity and impact
-- Add structured HTML with proper headings
-- Fact-check with verified sources
-- Trust-build with conversational tone
-- Optimize for E-E-A-T signals
-- Include semantic keyword clusters
-- Format as HTML-ready output with citations
-
-Generate ranking-ready content optimized for Google AI Overview.`;
-
+export async function generateContent(prompt: string, type: 'seo' | 'grant' = 'seo'): Promise<string> {
   try {
-    const message = await anthropic.messages.create({
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
+    let systemPrompt = '';
+    
+    if (type === 'seo') {
+      systemPrompt = `You are Sofeia AI, an expert SEO content writer. Create high-quality, engaging content optimized for search engines and Google AI Overview. Include proper headings, relevant keywords naturally, and ensure E-E-A-T compliance (Experience, Expertise, Authoritativeness, Trustworthiness).`;
+    } else if (type === 'grant') {
+      systemPrompt = `You are Sofeia AI, a professional grant writing specialist. Create comprehensive, well-structured grant proposals with clear objectives, detailed budgets, timelines, and impact assessments. Use formal, professional language appropriate for funding organizations.`;
+    }
+
+    const response = await anthropic.messages.create({
       // "claude-sonnet-4-20250514"
       model: DEFAULT_MODEL_STR,
+      system: systemPrompt,
+      max_tokens: 2048,
+      messages: [
+        { role: 'user', content: prompt }
+      ],
     });
 
-    return message.content[0].type === 'text' ? message.content[0].text : "Failed to generate content.";
-  } catch (error) {
+    return response.content[0].text || "I couldn't generate content. Please try again.";
+  } catch (error: any) {
     console.error('Anthropic API error:', error);
-    throw new Error('Failed to generate SEO content. Please check your API configuration.');
+    throw new Error(`Failed to generate content with Anthropic: ${error.message}`);
   }
+}
+
+export async function createSEOContent(topic: string, keywords: string[] = []): Promise<string> {
+  const keywordText = keywords.length > 0 ? `Focus on these keywords: ${keywords.join(', ')}. ` : '';
+  const prompt = `Create comprehensive SEO-optimized content about: ${topic}. ${keywordText}Include an engaging title, meta description, headers (H1, H2, H3), and well-structured content that would rank well in search results.`;
+  
+  return generateContent(prompt, 'seo');
 }
 
 export async function writeGrantProposal(
   organization: string,
   fundingBody: string,
-  projectDescription: string,
-  budget: string,
-  objectives: string
+  amount: string,
+  purpose: string
 ): Promise<string> {
-  const prompt = `Write a professional grant proposal with the following information:
-
-Organization: ${organization}
-Funding Body: ${fundingBody}
-Project Description: ${projectDescription}
-Budget: ${budget}
-Objectives: ${objectives}
-
-Structure the proposal with:
-📌 Executive Summary
-📌 Problem Statement
-📌 Objectives
-📌 Methodology
-📌 Budget Breakdown
-📌 Timeline
-📌 Impact Evaluation
-
-Format as HTML with:
-- Proper headings (<h2>, <h3>)
-- Budget tables with inline CSS
-- Strong emphasis for key points
-- Professional citations from official sources
-- Copy-paste ready formatting
-
-Make it compelling and professional for grant reviewers.`;
-
-  try {
-    const message = await anthropic.messages.create({
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-      // "claude-sonnet-4-20250514"
-      model: DEFAULT_MODEL_STR,
-    });
-
-    return message.content[0].type === 'text' ? message.content[0].text : "Failed to generate grant proposal.";
-  } catch (error) {
-    console.error('Anthropic API error:', error);
-    throw new Error('Failed to generate grant proposal. Please check your API configuration.');
-  }
+  const prompt = `Write a professional grant proposal for ${organization} requesting $${amount} from ${fundingBody} for: ${purpose}. Include executive summary, project description, budget breakdown, timeline, expected outcomes, and evaluation methods.`;
+  
+  return generateContent(prompt, 'grant');
 }

@@ -1,13 +1,4 @@
-interface PerplexityResponse {
-  choices: Array<{
-    message: {
-      content: string;
-    };
-  }>;
-  citations?: string[];
-}
-
-export async function conductResearch(topic: string): Promise<{ content: string; citations: string[] }> {
+export async function searchWithPerplexity(query: string): Promise<string> {
   try {
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -20,36 +11,39 @@ export async function conductResearch(topic: string): Promise<{ content: string;
         messages: [
           {
             role: 'system',
-            content: 'You are a professional research assistant. Provide comprehensive, well-sourced information with accurate citations.'
+            content: 'You are Sofeia AI research assistant. Provide accurate, well-researched information with citations when possible. Be concise but comprehensive.'
           },
           {
             role: 'user',
-            content: `Research the following topic and provide detailed information with sources: ${topic}`
+            content: query
           }
         ],
+        max_tokens: 1024,
         temperature: 0.2,
-        max_tokens: 2048,
-        return_citations: true,
-        return_images: false,
-        return_related_questions: false,
-        search_recency_filter: 'month',
         top_p: 0.9,
+        return_citations: true,
+        search_recency_filter: 'month',
         stream: false
-      })
+      }),
     });
 
     if (!response.ok) {
       throw new Error(`Perplexity API error: ${response.status} ${response.statusText}`);
     }
 
-    const data: PerplexityResponse = await response.json();
+    const data = await response.json();
+    let result = data.choices[0]?.message?.content || "I couldn't find information on this topic.";
     
-    return {
-      content: data.choices[0]?.message?.content || "Unable to conduct research on this topic.",
-      citations: data.citations || []
-    };
-  } catch (error) {
-    console.error("Perplexity API error:", error);
-    throw new Error("Failed to conduct research with Perplexity API");
+    // Add citations if available
+    if (data.citations && data.citations.length > 0) {
+      result += "\n\nSources:\n" + data.citations.slice(0, 3).map((citation: string, index: number) => 
+        `${index + 1}. ${citation}`
+      ).join('\n');
+    }
+    
+    return result;
+  } catch (error: any) {
+    console.error('Perplexity API error:', error);
+    throw new Error(`Failed to search with Perplexity: ${error.message}`);
   }
 }
