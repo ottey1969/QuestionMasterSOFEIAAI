@@ -6,6 +6,8 @@ import { Brain, Search, FileText, Shield, Zap, Globe, MessageCircle, Heart, Load
 export default function Landing() {
   const [isStartingChat, setIsStartingChat] = useState(false);
   const [loadingText, setLoadingText] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userIP, setUserIP] = useState("");
 
   const handleStartChat = () => {
     setIsStartingChat(true);
@@ -19,12 +21,45 @@ export default function Landing() {
     }, 3000);
   };
 
-  const handleWhatsApp = () => {
-    window.open("https://wa.me/31628073996", "_blank");
+  const handleContactAdmin = (plan: string) => {
+    const message = `Hello! I'm interested in the ${plan} plan (${plan === 'starter' ? '150 questions for €35/month' : '1500 questions for €300/month'}). My details:\nEmail: ${userEmail || 'Not provided'}\nIP: ${userIP || 'Not detected'}`;
+    const whatsappUrl = `https://wa.me/31628073996?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const handlePayPalPurchase = (plan: string) => {
+    // Collect email and IP before PayPal
+    const email = prompt("Please enter your email address:");
+    if (!email) return;
+    
+    setUserEmail(email);
+    
+    // PayPal integration with collected data
+    console.log(`PayPal purchase: ${plan}, Email: ${email}, IP: ${userIP}`);
+    alert("PayPal integration will be implemented with your details collected.");
   };
 
   const handleDonation = () => {
-    window.open("https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US", "_blank");
+    window.open("https://www.paypal.com/donate/?business=your-paypal-email&no_recurring=0&item_name=Support+Sofeia+AI", "_blank");
+  };
+
+  // Get user IP on component mount using the specified API
+  React.useEffect(() => {
+    // First try myipinfo.io as specified
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => setUserIP(data.ip || 'Unable to detect'))
+      .catch(() => {
+        // Fallback to ipify
+        fetch('https://api.ipify.org?format=json')
+          .then(response => response.json())
+          .then(data => setUserIP(data.ip))
+          .catch(() => setUserIP('Unable to detect'));
+      });
+  }, []);
+
+  const handleWhatsApp = () => {
+    window.open("https://wa.me/31628073996", "_blank");
   };
 
   return (
@@ -77,11 +112,84 @@ export default function Landing() {
                 {" "}Autonomous AI Agent
               </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-6 leading-relaxed">
               Powered by cutting-edge AI technology, Sofeia combines real-time research, 
               structured content generation, and multi-agent reasoning to deliver unparalleled results 
               across general questions, SEO content, and grant writing.
             </p>
+            
+            {/* Credit Purchase Cards */}
+            <div className="mb-12">
+              <p className="text-lg font-bold text-[#8B1538] mb-6">
+                If you need credits, please contact admin via WhatsApp. You can get 150 questions for 35 euros/month and 1500 questions for 300 euros per month.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+                {/* Starter Plan */}
+                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg">
+                  <CardContent className="p-6 text-center">
+                    <h3 className="text-2xl font-bold text-[#8B1538] mb-2">Starter Plan</h3>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">€35</div>
+                    <div className="text-gray-600 mb-4">per month</div>
+                    <div className="text-lg font-semibold text-[#8B1538] mb-4">150 Questions</div>
+                    <ul className="text-sm text-gray-600 mb-6 space-y-1">
+                      <li>• Perfect for individuals</li>
+                      <li>• All AI services included</li>
+                      <li>• Email support</li>
+                    </ul>
+                    <div className="flex flex-col gap-2">
+                      <Button 
+                        onClick={() => handleContactAdmin('starter')}
+                        className="bg-green-500 hover:bg-green-600 text-white w-full"
+                      >
+                        <MessageCircle className="mr-2" size={16} />
+                        Contact via WhatsApp
+                      </Button>
+                      <Button 
+                        onClick={() => handlePayPalPurchase('starter')}
+                        className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                      >
+                        Pay with PayPal
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Professional Plan */}
+                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg">
+                  <CardContent className="p-6 text-center relative">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#8B1538] text-white px-4 py-1 rounded-full text-sm font-medium">
+                      Popular
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#8B1538] mb-2 mt-2">Professional Plan</h3>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">€300</div>
+                    <div className="text-gray-600 mb-4">per month</div>
+                    <div className="text-lg font-semibold text-[#8B1538] mb-4">1500 Questions</div>
+                    <ul className="text-sm text-gray-600 mb-6 space-y-1">
+                      <li>• Best for businesses</li>
+                      <li>• All AI services included</li>
+                      <li>• Priority support</li>
+                      <li>• Bulk discounts available</li>
+                    </ul>
+                    <div className="flex flex-col gap-2">
+                      <Button 
+                        onClick={() => handleContactAdmin('professional')}
+                        className="bg-green-500 hover:bg-green-600 text-white w-full"
+                      >
+                        <MessageCircle className="mr-2" size={16} />
+                        Contact via WhatsApp
+                      </Button>
+                      <Button 
+                        onClick={() => handlePayPalPurchase('professional')}
+                        className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                      >
+                        Pay with PayPal
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Button 
