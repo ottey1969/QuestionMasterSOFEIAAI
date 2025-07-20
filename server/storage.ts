@@ -182,11 +182,28 @@ export class DatabaseStorage implements IStorage {
   // IP Credit operations for anonymous users
   async getIpCredits(ipAddress: string): Promise<IpCredit | undefined> {
     const [record] = await db.select().from(ipCredits).where(eq(ipCredits.ipAddress, ipAddress));
+    
+    // Automatically ensure admin IP has unlimited access
+    const adminIp = process.env.ADMIN_IP_ADDRESS || "112.198.165.82"; // Founder's IP
+    if (record && ipAddress === adminIp && !record.isUnlimited) {
+      // Auto-upgrade founder's IP to unlimited
+      const [updated] = await db
+        .update(ipCredits)
+        .set({ 
+          credits: 999999,
+          isUnlimited: true,
+          updatedAt: new Date() 
+        })
+        .where(eq(ipCredits.ipAddress, ipAddress))
+        .returning();
+      return updated;
+    }
+    
     return record;
   }
 
   async createIpCredits(ipAddress: string, email?: string): Promise<IpCredit> {
-    const adminIp = process.env.ADMIN_IP_ADDRESS || "127.0.0.1"; // Configure in env
+    const adminIp = process.env.ADMIN_IP_ADDRESS || "112.198.165.82"; // Founder's IP
     const isUnlimited = ipAddress === adminIp;
     
     const [record] = await db
