@@ -40,29 +40,43 @@ export async function processAIRequest(request: AIRequest): Promise<{
         break;
 
       case 'seo':
-        if (request.metadata?.keywords) {
-          response = await createSEOContent(request.content, request.metadata.keywords);
-        } else {
-          response = await createSEOContent(request.content);
+        try {
+          if (request.metadata?.keywords) {
+            response = await createSEOContent(request.content, request.metadata.keywords);
+          } else {
+            response = await createSEOContent(request.content);
+          }
+          service = 'Anthropic (Claude-4-Sonnet)';
+          creditsUsed = 2;
+        } catch (error) {
+          // Fallback to Groq if Anthropic fails
+          response = await askGeneralQuestion(`Create SEO content about: ${request.content}`);
+          service = 'Groq (Fallback for SEO)';
+          creditsUsed = 1;
         }
-        service = 'Anthropic (Claude-4-Sonnet)';
-        creditsUsed = 2;
         break;
 
       case 'grant':
-        if (request.metadata?.organization && request.metadata?.fundingBody && 
-            request.metadata?.amount && request.metadata?.purpose) {
-          response = await writeGrantProposal(
-            request.metadata.organization,
-            request.metadata.fundingBody,
-            request.metadata.amount,
-            request.metadata.purpose
-          );
-        } else {
-          response = await generateContent(request.content, 'grant');
+        try {
+          if (request.metadata?.organization && request.metadata?.fundingBody && 
+              request.metadata?.amount && request.metadata?.purpose) {
+            response = await writeGrantProposal(
+              request.metadata.organization,
+              request.metadata.fundingBody,
+              request.metadata.amount,
+              request.metadata.purpose
+            );
+          } else {
+            response = await generateContent(request.content, 'grant');
+          }
+          service = 'Anthropic (Claude-4-Sonnet)';
+          creditsUsed = 3;
+        } catch (error) {
+          // Fallback to Groq if Anthropic fails
+          response = await askGeneralQuestion(`Write a professional grant proposal for: ${request.content}`);
+          service = 'Groq (Fallback for Grant Writing)';
+          creditsUsed = 1;
         }
-        service = 'Anthropic (Claude-4-Sonnet)';
-        creditsUsed = 3;
         break;
 
       default:
