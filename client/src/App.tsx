@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useState, useEffect } from "react";
 import Landing from "@/pages/landing";
 import Chat from "@/pages/chat";
+import AdminPanel from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -40,6 +41,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/chat" component={Chat} />
+      <Route path="/admin" component={AdminPanel} />
       <Route component={NotFound} />
     </Switch>
   );
