@@ -27,20 +27,12 @@ export default function Landing() {
     window.open(whatsappUrl, "_blank");
   };
 
-  const handlePayPalPurchase = (plan: string) => {
-    // Collect email and IP before PayPal
-    const email = prompt("Please enter your email address:");
-    if (!email) return;
-    
-    setUserEmail(email);
-    
-    // PayPal integration with collected data
-    console.log(`PayPal purchase: ${plan}, Email: ${email}, IP: ${userIP}`);
-    alert("PayPal integration will be implemented with your details collected.");
+  const handlePayPalPurchase = () => {
+    window.open("https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US", "_blank");
   };
 
   const handleDonation = () => {
-    window.open("https://www.paypal.com/donate/?business=your-paypal-email&no_recurring=0&item_name=Support+Sofeia+AI", "_blank");
+    window.open("https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US", "_blank");
   };
 
   // Get user IP on component mount using the specified API
@@ -146,7 +138,7 @@ export default function Landing() {
                         Contact via WhatsApp
                       </Button>
                       <Button 
-                        onClick={() => handlePayPalPurchase('starter')}
+                        onClick={handlePayPalPurchase}
                         className="bg-blue-600 hover:bg-blue-700 text-white w-full"
                       >
                         Pay with PayPal
@@ -180,7 +172,7 @@ export default function Landing() {
                         Contact via WhatsApp
                       </Button>
                       <Button 
-                        onClick={() => handlePayPalPurchase('professional')}
+                        onClick={handlePayPalPurchase}
                         className="bg-blue-600 hover:bg-blue-700 text-white w-full"
                       >
                         Pay with PayPal
