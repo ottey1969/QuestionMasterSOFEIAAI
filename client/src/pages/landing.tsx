@@ -118,18 +118,19 @@ export default function Landing() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
                 {/* Starter Plan */}
-                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg">
-                  <CardContent className="p-6 text-center">
+                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg h-full flex flex-col">
+                  <CardContent className="p-6 text-center flex-1 flex flex-col">
                     <h3 className="text-2xl font-bold text-[#8B1538] mb-2">Starter Plan</h3>
                     <div className="text-3xl font-bold text-gray-900 mb-2">€35</div>
                     <div className="text-gray-600 mb-4">per month</div>
                     <div className="text-lg font-semibold text-[#8B1538] mb-4">150 Questions</div>
-                    <ul className="text-sm text-gray-600 mb-6 space-y-1">
+                    <ul className="text-sm text-gray-600 mb-6 space-y-1 flex-1">
                       <li>• Perfect for individuals</li>
                       <li>• All AI services included</li>
                       <li>• Email support</li>
+                      <li className="opacity-0">• Spacer for alignment</li>
                     </ul>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-auto">
                       <Button 
                         onClick={() => handleContactAdmin('starter')}
                         className="bg-green-500 hover:bg-green-600 text-white flex-1"
@@ -148,8 +149,8 @@ export default function Landing() {
                 </Card>
 
                 {/* Professional Plan */}
-                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg">
-                  <CardContent className="p-6 text-center relative">
+                <Card className="bg-white border-2 border-[#8B1538]/20 hover:border-[#8B1538]/40 transition-all shadow-lg h-full flex flex-col">
+                  <CardContent className="p-6 text-center relative flex-1 flex flex-col">
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#8B1538] text-white px-4 py-1 rounded-full text-sm font-medium">
                       Popular
                     </div>
@@ -157,13 +158,13 @@ export default function Landing() {
                     <div className="text-3xl font-bold text-gray-900 mb-2">€300</div>
                     <div className="text-gray-600 mb-4">per month</div>
                     <div className="text-lg font-semibold text-[#8B1538] mb-4">1500 Questions</div>
-                    <ul className="text-sm text-gray-600 mb-6 space-y-1">
+                    <ul className="text-sm text-gray-600 mb-6 space-y-1 flex-1">
                       <li>• Best for businesses</li>
                       <li>• All AI services included</li>
                       <li>• Priority support</li>
                       <li>• Bulk discounts available</li>
                     </ul>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-auto">
                       <Button 
                         onClick={() => handleContactAdmin('professional')}
                         className="bg-green-500 hover:bg-green-600 text-white flex-1"
