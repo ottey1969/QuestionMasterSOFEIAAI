@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: sofeia-ai
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sofeia-ai-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: GROQ_API_KEY
+        sync: false
+      - key: PERPLEXITY_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: sofeia-ai-db
+    databaseName: sofeia_ai
+    user: sofeia_user
