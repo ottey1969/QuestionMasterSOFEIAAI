@@ -1,6 +1,18 @@
-# Deployment Guide - Render
+# Deployment Guide - Sofeia AI Agent
 
-This guide walks you through deploying Sofeia AI to Render.com step-by-step.
+This guide walks you through deploying Sofeia AI Agent with smart country detection and IP-based credit system to Render.com step-by-step.
+
+## New Features in This Version
+
+### Smart Country Detection
+- Automatically detects target countries from user queries
+- Prioritizes country-specific government sources (India: gov.in, USA: .gov, UK: .gov.uk, etc.)
+- Supports 12+ countries with official government domains
+
+### IP-Based Credit System
+- Anonymous users get 5 questions per IP address without registration
+- Admin controls for credit management via `/admin` panel
+- Real-time credit tracking and WhatsApp contact integration
 
 ## Prerequisites
 
@@ -78,6 +90,8 @@ PERPLEXITY_API_KEY=<your-perplexity-api-key>
 ANTHROPIC_API_KEY=<your-anthropic-api-key>
 PAYPAL_CLIENT_ID=<your-paypal-client-id>
 PAYPAL_CLIENT_SECRET=<your-paypal-client-secret>
+ADMIN_KEY=<your-admin-secret-key>
+ADMIN_IP_ADDRESS=<your-admin-ip-for-unlimited-access>
 ```
 
 > **Note**: All API keys should be production-ready. The app features real-time chat with WebSocket support, HTML-formatted responses with copy functionality, and proper loading states for enhanced user experience.
@@ -89,10 +103,21 @@ PAYPAL_CLIENT_SECRET=<your-paypal-client-secret>
 - **Anthropic**: https://console.anthropic.com/ (free tier available)
 - **PayPal**: https://developer.paypal.com/ (sandbox for testing)
 
-### Generate SESSION_SECRET:
+### Generate SESSION_SECRET and ADMIN_KEY:
 ```bash
+# Generate SESSION_SECRET
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Generate ADMIN_KEY
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
+
+### Get Your Admin IP Address:
+```bash
+# Find your current IP address
+curl ifconfig.me
+```
+Set this as ADMIN_IP_ADDRESS for unlimited access
 
 ## Step 5: Deploy
 
@@ -133,10 +158,24 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 2. **Test AI Services**:
    - Try different message types:
      - "What is artificial intelligence?" (should use Groq - 1 credit)
-     - "Write me a blog post about contentscale" (should use Perplexity + Anthropic - 2 credits)
+     - "Find latest regulations in India" (should use Perplexity with Indian government sources - 1 credit)
+     - "Write me a blog post about AI" (should use Perplexity + Anthropic - 2 credits)
      - "Help me with grant writing for AI research" (should use Anthropic - 3 credits)
    - Verify HTML formatting with headings, bullets, and copy buttons work
    - Check that "Sofeia AI is thinking..." loading states appear
+
+3. **Test Smart Country Detection**:
+   - Try country-specific queries:
+     - "Content for India market" → Should prioritize gov.in, nic.in, rbi.org.in
+     - "UK healthcare policy" → Should focus on gov.uk, nhs.uk sources
+     - "US regulations" → Should target fda.gov, cdc.gov, sec.gov sources
+   - Verify citations come from country-specific government sources
+
+4. **Test IP Credit System**:
+   - Make 5 questions and verify credit deduction
+   - On 6th question, should show WhatsApp contact with IP address
+   - Test admin panel at `/admin` with ADMIN_KEY
+   - Verify admin can add credits to IP addresses
 
 ## Troubleshooting
 
@@ -193,10 +232,23 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ## Security Checklist
 
 - [ ] All API keys are in environment variables (not code)
-- [ ] SESSION_SECRET is strong and unique
+- [ ] SESSION_SECRET is strong and unique (64+ characters)
+- [ ] ADMIN_KEY is strong and unique (32+ characters)
+- [ ] ADMIN_IP_ADDRESS is set to your actual IP address
 - [ ] Database has restricted access
 - [ ] HTTPS is enabled (automatic on Render)
 - [ ] PayPal is using live credentials for production
+
+## Admin Panel Access
+
+After deployment, access the admin panel at:
+- **URL**: `https://your-app.onrender.com/admin`
+- **Login**: Use your ADMIN_KEY
+- **Features**:
+  - View all IP addresses and credit usage
+  - Add credits to specific IP addresses
+  - Set unlimited access for VIP users
+  - Monitor real-time usage with email tracking
 
 ## Cost Estimation
 

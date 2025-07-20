@@ -1,51 +1,113 @@
-# Quick Deployment Guide
+# Quick Deployment Guide - Sofeia AI Agent
 
-## One-Click Deploy Options
+Deploy Sofeia AI Agent with smart country detection in 5 minutes.
 
-### Deploy to Render (Recommended)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/sofeia-ai)
+## One-Click Deploy to Render
 
-### Deploy to Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/sofeia-ai)
-
-### Deploy to Netlify
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/yourusername/sofeia-ai)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ## Environment Variables Required
 
-```env
+Set these in your deployment platform:
+
+```bash
+# Database
 DATABASE_URL=postgresql://username:password@host:port/database
-SESSION_SECRET=your-random-64-char-secret
-GROQ_API_KEY=gsk_...
-PERPLEXITY_API_KEY=pplx-...
-ANTHROPIC_API_KEY=sk-ant-...
+
+# Session Security
+SESSION_SECRET=your-64-char-random-string
+
+# AI APIs
+GROQ_API_KEY=your-groq-api-key
+PERPLEXITY_API_KEY=your-perplexity-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+
+# Payment Integration
 PAYPAL_CLIENT_ID=your-paypal-client-id
 PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+
+# Admin Controls
+ADMIN_KEY=your-32-char-admin-key
+ADMIN_IP_ADDRESS=your-ip-address-for-unlimited-access
 ```
 
-## Get API Keys
+## Generate Secrets
 
-1. **Groq** (Free): https://console.groq.com/keys
-2. **Perplexity** (Paid): https://www.perplexity.ai/settings/api
-3. **Anthropic** (Free tier): https://console.anthropic.com/
-4. **PayPal** (Free): https://developer.paypal.com/
+```bash
+# Generate SESSION_SECRET
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
-## Features Included
+# Generate ADMIN_KEY
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-✅ Real-time WebSocket chat  
-✅ HTML-formatted AI responses  
-✅ Copy buttons for text/HTML output  
-✅ Loading states with "Sofeia AI is thinking..."  
-✅ Three specialized AI services  
-✅ Responsive design  
-✅ PayPal donation integration  
+# Get your IP address
+curl ifconfig.me
+```
+
+## Quick Commands
+
+```bash
+# Development
+npm run dev
+
+# Production Build
+npm run build
+
+# Start Production
+npm start
+
+# Database Setup
+npm run db:push
+
+# Deploy with script
+./deploy.sh
+```
+
+## Features Ready After Deployment
+
+### Smart Country Detection
+- Automatically detects target countries from queries
+- Prioritizes relevant government sources:
+  - India: gov.in, nic.in, rbi.org.in, sebi.gov.in
+  - USA: gov, fda.gov, cdc.gov, nih.gov, sec.gov
+  - UK: gov.uk, nhs.uk, parliament.uk
+  - 12+ countries supported
+
+### IP-Based Credit System
+- 5 questions per IP without registration
+- Real-time credit tracking
+- WhatsApp contact when exhausted
+- Admin panel at `/admin` for credit management
+
+### Multi-AI Integration
+- **General Questions**: Groq (1 credit)
+- **Research & Citations**: Perplexity with country targeting (1 credit)
+- **SEO Content**: Perplexity + Anthropic (2 credits)
+- **Grant Writing**: Anthropic (3 credits)
+
+## Testing After Deployment
+
+1. **Basic Function**: Visit your URL, should see landing page
+2. **Chat Interface**: Click "Start Chatting", test WebSocket connection
+3. **Country Detection**: Try "Content for India" → Should prioritize Indian sources
+4. **Credit System**: Make 5 questions, verify credit deduction
+5. **Admin Panel**: Visit `/admin`, login with ADMIN_KEY
 
 ## Support
 
 - **Founder**: Ottmar Francisca
 - **WhatsApp**: +31 628 073 996
-- **Donate**: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US
+- **Donations**: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US
 
----
+## One-Minute Test
 
-© 2025 Sofeia AI Agent • The world's most advanced autonomous AI system
+```bash
+# Test country detection
+curl -X POST https://your-app.com/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Find regulations in India", "sessionId": "test"}'
+
+# Should return response with Indian government sources (gov.in, nic.in, etc.)
+```
+
+© 2025 Sofeia AI Agent • Built for global content creators

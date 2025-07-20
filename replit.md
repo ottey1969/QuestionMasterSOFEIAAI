@@ -36,7 +36,7 @@ Preferred communication style: Simple, everyday language.
 
 ### AI Service Integrations
 1. **General Questions**: Groq API with Mixtral model for fast responses
-2. **Research & Citations**: Perplexity API with country-specific government sources (.gov, .gov.uk, .europa.eu, .gc.ca, .gov.au, .rijksoverheid.nl), educational institutions, and high-authority domains
+2. **Research & Citations**: Perplexity API with smart country detection and targeting of region-specific government sources (India: gov.in, nic.in, rbi.org.in; USA: .gov, fda.gov, cdc.gov; UK: .gov.uk, nhs.uk; and 10+ other countries)
 3. **SEO Content**: Perplexity API for research + Anthropic Claude for content generation
 4. **Grant Writing**: Anthropic Claude API for professional proposal writing
 

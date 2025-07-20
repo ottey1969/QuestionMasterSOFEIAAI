@@ -6,13 +6,14 @@ The world's most advanced autonomous AI system, combining multi-agent reasoning,
 
 - **Multi-AI Integration**: Powered by Groq, Perplexity, and Anthropic APIs
 - **Intelligent Routing**: Automatically selects the best AI service based on query type
+- **Smart Country Detection**: Auto-detects target country/region and prioritizes relevant government sources
 - **IP-Based Credit System**: 5 questions max per IP without registration, admin controls available
-- **Government & High-DR Sources**: Prioritizes .gov, .edu, and authoritative domains for research
+- **Government & High-DR Sources**: Prioritizes country-specific .gov domains and authoritative sources
 - **Real-time Chat**: WebSocket-based communication with loading states and credit tracking
 - **Professional Formatting**: HTML-rendered responses with headings, bullets, copy functions, and citations
 - **Four Specialized Services**:
   - General Questions (Groq llama3-8b-8192) - 1 credit
-  - Research & Citations (Perplexity with government sources) - 1 credit
+  - Research & Citations (Perplexity with smart country targeting) - 1 credit
   - SEO & AI Content (Perplexity + Anthropic Claude-4-Sonnet) - 2 credits
   - Grant Writing (Anthropic Claude-4-Sonnet) - 3 credits
 
@@ -141,6 +142,29 @@ curl "http://localhost:5000/api/admin/credits/list?adminKey=your-admin-key"
 - **Credit Tracking**: Real-time credit deduction and display
 - **Contact Integration**: Automatic WhatsApp contact when credits exhausted
 - **Email Tracking**: Optional email association for IP addresses
+
+### Smart Country Targeting
+
+The system automatically detects target countries/regions from user queries and prioritizes relevant sources:
+
+**Supported Regions:**
+- **India**: gov.in, nic.in, rbi.org.in, sebi.gov.in, irdai.gov.in
+- **USA**: gov, fda.gov, cdc.gov, nih.gov, epa.gov, sec.gov
+- **UK**: gov.uk, nhs.uk, parliament.uk, ofcom.org.uk, fca.org.uk
+- **Canada**: gc.ca, canada.ca, bankofcanada.ca
+- **Australia**: gov.au, aph.gov.au, rba.gov.au, asic.gov.au
+- **Singapore**: gov.sg, mas.gov.sg, moh.gov.sg
+- **Germany**: bund.de, bundesregierung.de, bundesbank.de
+- **France**: gouv.fr, service-public.fr, banque-france.fr
+- **Japan**: go.jp, mof.go.jp, boj.or.jp
+- **China**: gov.cn, pbc.gov.cn, csrc.gov.cn
+- **Brazil**: gov.br, bcb.gov.br
+- **Mexico**: gob.mx, banxico.org.mx
+
+**Example Triggers:**
+- "Content for India" → Prioritizes Indian government sources
+- "UK healthcare policy" → Focuses on NHS and gov.uk domains
+- "US regulations" → Targets FDA, CDC, SEC, and other US agencies
 
 ### User Experience
 

@@ -98,7 +98,7 @@ export async function processAIRequest(request: AIRequest): Promise<{
 export function detectServiceType(message: string): ServiceType {
   const lowerMessage = message.toLowerCase();
   
-  // Check for research/search indicators
+  // Check for research/search indicators including country-specific content
   if (lowerMessage.includes('research') || lowerMessage.includes('search') || 
       lowerMessage.includes('find information') || lowerMessage.includes('latest') ||
       lowerMessage.includes('news') || lowerMessage.includes('current') ||
@@ -107,7 +107,16 @@ export function detectServiceType(message: string): ServiceType {
       lowerMessage.includes('study') || lowerMessage.includes('report') ||
       lowerMessage.includes('policy') || lowerMessage.includes('regulation') ||
       lowerMessage.includes('law') || lowerMessage.includes('legal') ||
-      lowerMessage.includes('country') || lowerMessage.includes('national')) {
+      lowerMessage.includes('country') || lowerMessage.includes('national') ||
+      // Country mentions for targeted research
+      lowerMessage.includes('india') || lowerMessage.includes('usa') || lowerMessage.includes('america') ||
+      lowerMessage.includes('uk') || lowerMessage.includes('britain') || lowerMessage.includes('canada') ||
+      lowerMessage.includes('australia') || lowerMessage.includes('singapore') || lowerMessage.includes('japan') ||
+      lowerMessage.includes('germany') || lowerMessage.includes('france') || lowerMessage.includes('china') ||
+      lowerMessage.includes('brazil') || lowerMessage.includes('mexico') ||
+      // Content targeting phrases
+      lowerMessage.includes('content for') || lowerMessage.includes('audience in') ||
+      lowerMessage.includes('market in') || lowerMessage.includes('regulations in')) {
     return 'research';
   }
   
