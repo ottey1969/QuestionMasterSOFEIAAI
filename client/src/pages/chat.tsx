@@ -190,12 +190,14 @@ export default function Chat() {
       timestamp: new Date()
     };
 
+    // Immediate visual feedback - show user message and start thinking animation instantly
     setMessages(prev => [...prev, userMessage]);
+    setNewMessage("");
     setIsLoading(true);
     setIsThinking(true);
     
-    // Show immediate feedback that message is being sent
-    setNewMessage("");
+    // Add a small delay to show the thinking animation before processing
+    await new Promise(resolve => setTimeout(resolve, 300));
     
     try {
       // Send via WebSocket for real-time response
@@ -376,17 +378,22 @@ export default function Chat() {
                     </div>
                   ))}
                   {isThinking && (
-                    <div className="flex justify-start">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-[80%]">
+                    <div className="flex justify-start animate-in slide-in-from-left-2 duration-300">
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4 max-w-[80%] shadow-sm">
                         <div className="flex items-center gap-3">
                           <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                            <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-bounce"></div>
+                            <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+                            <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
                           </div>
-                          <div>
-                            <span className="text-sm text-blue-700 font-medium">Sofeia AI is thinking...</span>
-                            <p className="text-xs text-blue-600 mt-1">Processing your request with advanced AI</p>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <Brain className="w-4 h-4 text-blue-600 animate-pulse" />
+                              <span className="text-sm text-blue-700 font-medium">Sofeia AI is analyzing...</span>
+                            </div>
+                            <p className="text-xs text-blue-600 mt-1 animate-pulse">
+                              Processing with advanced AI reasoning
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -399,24 +406,58 @@ export default function Chat() {
             
             <form onSubmit={handleSendMessage} className="p-4 border-t bg-gray-50">
               <div className="flex gap-2">
-                <Input
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type your message here..."
-                  className="flex-1"
-                  disabled={!sessionId || isLoading}
-                />
+                <div className="flex-1 relative">
+                  <Input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    disabled={!sessionId || isLoading}
+                    className={`w-full transition-all duration-200 ${
+                      isLoading ? 'bg-gray-100 border-blue-300' : 'focus:ring-2 focus:ring-blue-500'
+                    }`}
+                  />
+                  {isLoading && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <div className="flex gap-1">
+                        <div className="w-1 h-1 bg-blue-500 rounded-full animate-pulse"></div>
+                        <div className="w-1 h-1 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-1 h-1 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <Button 
                   type="submit" 
                   disabled={!newMessage.trim() || !sessionId || isLoading}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                  className={`bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 ${
+                    isLoading ? 'scale-95 opacity-75' : 'hover:scale-105'
+                  }`}
                 >
-                  <Send className="h-4 w-4" />
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                {isConnected ? 'Connected via WebSocket for real-time responses' : 'Using HTTP fallback'}
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs text-gray-500">
+                  {isLoading ? (
+                    <span className="text-blue-600 animate-pulse">
+                      ⚡ Processing your message...
+                    </span>
+                  ) : isConnected ? (
+                    '🟢 Connected via WebSocket for real-time responses'
+                  ) : (
+                    '🔴 Using HTTP fallback'
+                  )}
+                </p>
+                {newMessage.trim() && !isLoading && (
+                  <p className="text-xs text-gray-400 animate-pulse">
+                    Press Enter to send
+                  </p>
+                )}
+              </div>
             </form>
           </CardContent>
         </Card>
