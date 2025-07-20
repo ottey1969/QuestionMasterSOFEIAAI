@@ -313,7 +313,7 @@ export default function Chat() {
                       >
                         <div 
                           className={`text-sm leading-relaxed prose prose-sm max-w-none ${
-                            message.sender === 'ai' ? 'prose-gray' : ''
+                            message.sender === 'ai' ? 'prose-gray' : 'prose-invert text-white'
                           }`}
                           dangerouslySetInnerHTML={{
                             __html: message.sender === 'ai' ? convertMarkdownToHTML(message.content) : message.content
