@@ -4,7 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
 import { extractSecurityInfo, generateFingerprint } from "./services/security";
-import { processAIRequest, detectServiceType, formatAIResponse, type AIRequest } from "./services/aiRouter";
+import { processAIRequest, detectServiceType, formatAIResponse, needsClarification, formatClarificationResponse, type AIRequest } from "./services/aiRouter";
 import { z } from "zod";
 
 // Validation schemas
@@ -52,6 +52,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
               }));
               return;
             }
+            
+            // Check if the message needs clarification first
+            const clarification = needsClarification(message.content);
+            
+            if (clarification.needs) {
+              // Return clarification questions without using credits
+              const clarificationResponse = formatClarificationResponse(clarification.questions);
+              ws.send(JSON.stringify({ 
+                type: 'response', 
+                content: clarificationResponse,
+                timestamp: new Date().toISOString(),
+                sessionId: message.sessionId,
+                service: 'Sofeia AI (Clarification)',
+                creditsUsed: 0,
+                creditsRemaining: ipCredit.isUnlimited ? 'unlimited' : ipCredit.credits,
+                needsClarification: true
+              }));
+              return;
+            }
+            
+            // Send thinking message first
+            ws.send(JSON.stringify({ 
+              type: 'thinking', 
+              content: '🤔 Sofeia AI is thinking...',
+              timestamp: new Date().toISOString()
+            }));
             
             const serviceType = detectServiceType(message.content);
             const aiRequest: AIRequest = {
@@ -179,6 +205,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
             whatsapp: '+31 628 073 996',
             message: `Hi, I need more credits for Sofeia AI. My IP address is: ${ip}`
           }
+        });
+      }
+      
+      // Check if the message needs clarification first
+      const clarification = needsClarification(message);
+      
+      if (clarification.needs) {
+        // Return clarification questions without using credits
+        const clarificationResponse = formatClarificationResponse(clarification.questions);
+        return res.json({ 
+          response: clarificationResponse,
+          sessionId,
+          timestamp: new Date().toISOString(),
+          service: 'Sofeia AI (Clarification)',
+          creditsUsed: 0,
+          creditsRemaining: ipCredit.isUnlimited ? 'unlimited' : ipCredit.credits,
+          needsClarification: true
         });
       }
       

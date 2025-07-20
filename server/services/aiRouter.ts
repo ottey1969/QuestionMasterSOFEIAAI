@@ -137,6 +137,52 @@ export function detectServiceType(message: string): ServiceType {
   return 'general';
 }
 
+// Check if the message needs clarification before processing
+export function needsClarification(message: string): { needs: boolean; questions: string[] } {
+  const lowerMessage = message.toLowerCase();
+  const questions: string[] = [];
+  
+  // Check for vague blog/content requests
+  if ((lowerMessage.includes('blog') || lowerMessage.includes('article') || lowerMessage.includes('content')) && 
+      !lowerMessage.includes('about') && !lowerMessage.includes('for') && 
+      lowerMessage.split(' ').length < 6) {
+    questions.push("What specific topic would you like me to write about?");
+    questions.push("What target country/audience should I focus on?");
+    questions.push("Any specific keywords you'd like me to include?");
+  }
+  
+  // Check for vague grant requests
+  if (lowerMessage.includes('grant') && !lowerMessage.includes('for') && 
+      lowerMessage.split(' ').length < 6) {
+    questions.push("What organization are you writing this grant for?");
+    questions.push("Which funding body are you targeting?");
+    questions.push("What's the purpose/project of the grant?");
+    questions.push("What's the funding amount you're requesting?");
+  }
+  
+  // Check for vague research requests
+  if ((lowerMessage.includes('research') || lowerMessage.includes('find')) && 
+      !lowerMessage.includes('about') && lowerMessage.split(' ').length < 5) {
+    questions.push("What specific topic should I research?");
+    questions.push("Which country or region should I focus on?");
+    questions.push("Are you looking for government regulations, statistics, or general information?");
+  }
+  
+  return {
+    needs: questions.length > 0,
+    questions
+  };
+}
+
 export function formatAIResponse(response: string, service: string, creditsUsed: number): string {
   return `**🤖 Sofeia AI Response** (${service} • ${creditsUsed} credit${creditsUsed > 1 ? 's' : ''})\n\n${response}`;
+}
+
+// Format clarification response
+export function formatClarificationResponse(questions: string[]): string {
+  const intro = "I'd be happy to help you! To provide the best possible content, I need a few more details:";
+  const questionList = questions.map((q, i) => `${i + 1}. ${q}`).join('\n');
+  const outro = "\nPlease provide these details, and I'll create exactly what you need with relevant sources and targeting.";
+  
+  return `${intro}\n\n${questionList}${outro}`;
 }
