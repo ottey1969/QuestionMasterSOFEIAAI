@@ -90,8 +90,8 @@ PERPLEXITY_API_KEY=<your-perplexity-api-key>
 ANTHROPIC_API_KEY=<your-anthropic-api-key>
 PAYPAL_CLIENT_ID=<your-paypal-client-id>
 PAYPAL_CLIENT_SECRET=<your-paypal-client-secret>
-ADMIN_KEY=<your-admin-secret-key>
-ADMIN_IP_ADDRESS=<your-admin-ip-for-unlimited-access>
+ADMIN_KEY=0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
+ADMIN_IP_ADDRESS=112.198.165.82
 ```
 
 > **Note**: All API keys should be production-ready. The app features real-time chat with WebSocket support, HTML-formatted responses with copy functionality, and proper loading states for enhanced user experience.
@@ -119,8 +119,9 @@ curl ifconfig.me
 ```
 Set this as ADMIN_IP_ADDRESS for unlimited access
 
-**Example for Ottmar Francisca:**
+**Configured for Ottmar Francisca (Founder):**
 ```env
+ADMIN_KEY=0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
 ADMIN_IP_ADDRESS=112.198.165.82
 ```
 
@@ -155,10 +156,11 @@ ADMIN_IP_ADDRESS=112.198.165.82
 1. **Visit Your App**:
    - Use the provided `.onrender.com` URL
    - Test all functionality:
-     - Landing page loads
-     - Chat interface works
-     - AI responses are generated
-     - WebSocket connection established
+     - Landing page loads with Sofeia AI branding
+     - Chat interface works with WebSocket connection
+     - AI responses are generated with HTML formatting
+     - Copy buttons work on responses
+     - Loading states show "Sofeia AI is thinking..."
 
 2. **Test AI Services**:
    - Try different message types:
@@ -177,10 +179,11 @@ ADMIN_IP_ADDRESS=112.198.165.82
    - Verify citations come from country-specific government sources
 
 4. **Test IP Credit System**:
-   - Make 5 questions and verify credit deduction
-   - On 6th question, should show WhatsApp contact with IP address
-   - Test admin panel at `/admin` with ADMIN_KEY
-   - Verify admin can add credits to IP addresses
+   - Make 5 questions from a different IP and verify credit deduction (5→4→3→2→1→0)
+   - On 6th question, should show WhatsApp contact (+31 628 073 996) with IP address
+   - Test admin panel at `/admin` with ADMIN_KEY: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
+   - Verify admin can add credits to specific IP addresses
+   - Confirm Ottmar's IP (112.198.165.82) has unlimited access
 
 ## Troubleshooting
 
@@ -248,12 +251,15 @@ ADMIN_IP_ADDRESS=112.198.165.82
 
 After deployment, access the admin panel at:
 - **URL**: `https://your-app.onrender.com/admin`
-- **Login**: Use your ADMIN_KEY
+- **Login**: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
+- **Founder Access**: IP 112.198.165.82 (Ottmar Francisca) has unlimited credits
 - **Features**:
-  - View all IP addresses and credit usage
-  - Add credits to specific IP addresses
-  - Set unlimited access for VIP users
-  - Monitor real-time usage with email tracking
+  - View all IP addresses and credit usage in real-time
+  - Add credits to specific IP addresses for customers
+  - Set unlimited access for VIP users and partners
+  - Monitor usage patterns with email tracking
+  - Security logs with risk assessment
+  - Export usage data for billing and analytics
 
 ## Cost Estimation
 

@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Sofeia AI Agent - Quick Deployment Script
-# © 2025 Ottmar Francisca
+# Sofeia AI Agent - Production Deployment Script
+# © 2025 Ottmar Francisca - CEO/Founder
+# Contact: +31 628 073 996
 
 echo "🚀 Deploying Sofeia AI Agent with Smart Country Detection..."
+echo "👨‍💼 Founder: Ottmar Francisca"
+echo "🌍 Features: 12+ Country Targeting, IP-Based Credits, Multi-AI Integration"
 
 # Check if required environment variables are set
 if [ -z "$DATABASE_URL" ]; then
@@ -46,14 +49,20 @@ npm run db:push
 
 echo "✅ Deployment complete!"
 echo ""
-echo "🌟 Sofeia AI Agent Features:"
-echo "   • Smart Country Detection (12+ countries)"
-echo "   • IP-Based Credit System (5 questions per IP)"
-echo "   • Multi-AI Integration (Groq, Perplexity, Anthropic)"
-echo "   • Admin Panel at /admin"
-echo "   • Real-time Chat with WebSocket"
+echo "🌟 Sofeia AI Agent - Production Ready!"
+echo "   ✅ Smart Country Detection (12+ countries with government sources)"
+echo "   ✅ IP-Based Credit System (5 questions per IP, unlimited for admin)"
+echo "   ✅ Multi-AI Integration (Groq, Perplexity, Anthropic)"
+echo "   ✅ Admin Panel at /admin"
+echo "   ✅ Real-time Chat with WebSocket"
+echo "   ✅ HTML Formatted Responses with Copy Functions"
+echo "   ✅ Government Source Prioritization"
 echo ""
-echo "📱 Admin Contact: +31 628 073 996"
+echo "🔐 Admin Access:"
+echo "   • IP: 112.198.165.82 (Ottmar Francisca - Unlimited Credits)"
+echo "   • Admin Key: 0f5db...42eb"
+echo ""
+echo "📱 Contact: +31 628 073 996 (WhatsApp)"
 echo "💝 Support: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US"
 echo ""
-echo "🎉 Ready to serve intelligent AI responses!"
+echo "🎉 Sofeia AI Agent is now live and ready to serve global content creators!"

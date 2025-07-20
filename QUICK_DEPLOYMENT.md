@@ -26,9 +26,9 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 PAYPAL_CLIENT_ID=your-paypal-client-id
 PAYPAL_CLIENT_SECRET=your-paypal-client-secret
 
-# Admin Controls
-ADMIN_KEY=your-32-char-admin-key
-ADMIN_IP_ADDRESS=your-ip-address-for-unlimited-access
+# Admin Controls (Configured for Ottmar Francisca)
+ADMIN_KEY=0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
+ADMIN_IP_ADDRESS=112.198.165.82
 ```
 
 ## Generate Secrets
@@ -37,12 +37,13 @@ ADMIN_IP_ADDRESS=your-ip-address-for-unlimited-access
 # Generate SESSION_SECRET
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
-# Generate ADMIN_KEY
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+# Already configured for Ottmar Francisca (Founder):
+# ADMIN_KEY=0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
+# ADMIN_IP_ADDRESS=112.198.165.82
 
-# Get your IP address
+# To generate new admin credentials:
+node -e "console.log('ADMIN_KEY=' + require('crypto').randomBytes(32).toString('hex'))"
 curl ifconfig.me
-# Example: 112.198.165.82
 ```
 
 ## Quick Commands
@@ -92,7 +93,7 @@ npm run db:push
 2. **Chat Interface**: Click "Start Chatting", test WebSocket connection
 3. **Country Detection**: Try "Content for India" → Should prioritize Indian sources
 4. **Credit System**: Make 5 questions, verify credit deduction
-5. **Admin Panel**: Visit `/admin`, login with ADMIN_KEY
+5. **Admin Panel**: Visit `/admin`, login with: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
 
 ## Support
 
