@@ -21,6 +21,7 @@ export default function Chat() {
   const [newMessage, setNewMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const { sessionId } = useAuth();
   const { toast } = useToast();
@@ -31,19 +32,49 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Function to strip markdown formatting and convert to plain text
-  const stripMarkdown = (text: string): string => {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold **text**
-      .replace(/\*(.*?)\*/g, '$1') // Remove italic *text*
-      .replace(/`(.*?)`/g, '$1') // Remove inline code `text`
-      .replace(/```[\s\S]*?```/g, '') // Remove code blocks
-      .replace(/#{1,6}\s*(.*)/g, '$1') // Remove headers
-      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links [text](url)
-      .replace(/^\s*[-*+]\s+/gm, '') // Remove bullet points
-      .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered lists
-      .replace(/\n{3,}/g, '\n\n') // Replace multiple newlines with double
-      .trim();
+  // Function to convert markdown to formatted HTML
+  const convertMarkdownToHTML = (text: string): string => {
+    let html = text;
+    
+    // Headers (H1-H6)
+    html = html.replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>');
+    html = html.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold mt-6 mb-3">$1</h2>');
+    html = html.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>');
+    
+    // Bold and italic
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
+    html = html.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
+    
+    // Code blocks
+    html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 p-3 rounded-lg text-sm font-mono overflow-x-auto my-3"><code>$1</code></pre>');
+    html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>');
+    
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">$1</a>');
+    
+    // Bullet points
+    html = html.replace(/^\s*[-*+]\s+(.*)$/gm, '<li class="ml-4">$1</li>');
+    
+    // Numbered lists  
+    html = html.replace(/^\s*\d+\.\s+(.*)$/gm, '<li class="ml-4 numbered">$1</li>');
+    
+    // Wrap consecutive list items
+    html = html.replace(/(<li class="ml-4"[^>]*>.*?<\/li>\s*)+/g, '<ul class="list-disc list-inside space-y-1 my-3">$&</ul>');
+    html = html.replace(/(<li class="ml-4 numbered"[^>]*>.*?<\/li>\s*)+/g, '<ol class="list-decimal list-inside space-y-1 my-3">$&</ol>');
+    
+    // Clean up numbered class
+    html = html.replace(/class="ml-4 numbered"/g, 'class="ml-4"');
+    
+    // Line breaks and paragraphs
+    html = html.replace(/\n\n/g, '</p><p class="mb-3">');
+    html = html.replace(/\n/g, '<br>');
+    
+    // Wrap in paragraph if not already wrapped
+    if (!html.startsWith('<')) {
+      html = '<p class="mb-3">' + html + '</p>';
+    }
+    
+    return html;
   };
 
   // Function to convert plain text to HTML with basic formatting
@@ -56,7 +87,7 @@ export default function Chat() {
 
   const copyAsHTML = async (message: Message) => {
     try {
-      const htmlContent = convertToHTML(message.content);
+      const htmlContent = convertMarkdownToHTML(message.content);
       await navigator.clipboard.writeText(htmlContent);
       setCopiedMessageId(message.id);
       toast({
@@ -113,9 +144,10 @@ export default function Chat() {
       try {
         const data = JSON.parse(event.data);
         if (data.type === 'response') {
+          setIsThinking(false);
           const aiMessage: Message = {
             id: Date.now().toString(),
-            content: stripMarkdown(data.content),
+            content: data.content,
             sender: 'ai',
             timestamp: new Date(),
             service: data.service,
@@ -125,6 +157,7 @@ export default function Chat() {
         }
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
+        setIsThinking(false);
       }
     };
 
@@ -157,6 +190,7 @@ export default function Chat() {
 
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
+    setIsThinking(true);
     
     try {
       // Send via WebSocket for real-time response
@@ -182,9 +216,10 @@ export default function Chat() {
         }
 
         const data = await response.json();
+        setIsThinking(false);
         const aiMessage: Message = {
           id: Date.now().toString(),
-          content: stripMarkdown(data.response),
+          content: data.response,
           sender: 'ai',
           timestamp: new Date(),
           service: data.service,
@@ -202,6 +237,7 @@ export default function Chat() {
       });
     } finally {
       setIsLoading(false);
+      setIsThinking(false);
     }
   };
 
@@ -267,9 +303,12 @@ export default function Chat() {
                             : 'bg-gray-100 text-gray-900 border'
                         }`}
                       >
-                        <div className="whitespace-pre-wrap text-sm leading-relaxed font-mono">
-                          {message.content}
-                        </div>
+                        <div 
+                          className="text-sm leading-relaxed prose prose-sm max-w-none"
+                          dangerouslySetInnerHTML={{
+                            __html: message.sender === 'ai' ? convertMarkdownToHTML(message.content) : message.content
+                          }}
+                        />
                         
                         {/* AI Message Footer with Service Info and Copy Buttons */}
                         {message.sender === 'ai' && (
@@ -326,16 +365,19 @@ export default function Chat() {
                       </div>
                     </div>
                   ))}
-                  {isLoading && (
+                  {isThinking && (
                     <div className="flex justify-start">
-                      <div className="bg-gray-100 rounded-lg p-3 border">
-                        <div className="flex items-center gap-2">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-[80%]">
+                        <div className="flex items-center gap-3">
                           <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                           </div>
-                          <span className="text-xs text-gray-500">AI is thinking...</span>
+                          <div>
+                            <span className="text-sm text-blue-700 font-medium">Sofeia AI is thinking...</span>
+                            <p className="text-xs text-blue-600 mt-1">Processing your request with advanced AI</p>
+                          </div>
                         </div>
                       </div>
                     </div>
