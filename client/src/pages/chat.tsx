@@ -39,20 +39,20 @@ export default function Chat() {
     let html = text;
     
     // Headers (H1-H6)
-    html = html.replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>');
-    html = html.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold mt-6 mb-3">$1</h2>');
-    html = html.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>');
+    html = html.replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold mt-4 mb-2 text-gray-900">$1</h3>');
+    html = html.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold mt-6 mb-3 text-gray-900">$1</h2>');
+    html = html.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mt-6 mb-4 text-gray-900">$1</h1>');
     
     // Bold and italic
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
-    html = html.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
+    html = html.replace(/\*(.*?)\*/g, '<em class="italic text-gray-800">$1</em>');
     
     // Code blocks
-    html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 p-3 rounded-lg text-sm font-mono overflow-x-auto my-3"><code>$1</code></pre>');
-    html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>');
+    html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm font-mono overflow-x-auto my-3"><code>$1</code></pre>');
+    html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-200 text-gray-800 px-1 py-0.5 rounded text-sm font-mono">$1</code>');
     
     // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">$1</a>');
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline font-medium" target="_blank" rel="noopener">$1</a>');
     
     // Bullet points
     html = html.replace(/^\s*[-*+]\s+(.*)$/gm, '<li class="ml-4">$1</li>');
@@ -61,8 +61,8 @@ export default function Chat() {
     html = html.replace(/^\s*\d+\.\s+(.*)$/gm, '<li class="ml-4 numbered">$1</li>');
     
     // Wrap consecutive list items
-    html = html.replace(/(<li class="ml-4"[^>]*>.*?<\/li>\s*)+/g, '<ul class="list-disc list-inside space-y-1 my-3">$&</ul>');
-    html = html.replace(/(<li class="ml-4 numbered"[^>]*>.*?<\/li>\s*)+/g, '<ol class="list-decimal list-inside space-y-1 my-3">$&</ol>');
+    html = html.replace(/(<li class="ml-4"[^>]*>.*?<\/li>\s*)+/g, '<ul class="list-disc list-inside space-y-1 my-3 text-gray-800">$&</ul>');
+    html = html.replace(/(<li class="ml-4 numbered"[^>]*>.*?<\/li>\s*)+/g, '<ol class="list-decimal list-inside space-y-1 my-3 text-gray-800">$&</ol>');
     
     // Clean up numbered class
     html = html.replace(/class="ml-4 numbered"/g, 'class="ml-4"');
@@ -73,7 +73,7 @@ export default function Chat() {
     
     // Wrap in paragraph if not already wrapped
     if (!html.startsWith('<')) {
-      html = '<p class="mb-3">' + html + '</p>';
+      html = '<p class="mb-3 text-gray-800">' + html + '</p>';
     }
     
     return html;
@@ -308,11 +308,13 @@ export default function Chat() {
                         className={`max-w-[80%] rounded-lg p-3 ${
                           message.sender === 'user'
                             ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                            : 'bg-gray-100 text-gray-900 border'
+                            : 'bg-white text-gray-900 border border-gray-200 shadow-sm'
                         }`}
                       >
                         <div 
-                          className="text-sm leading-relaxed prose prose-sm max-w-none"
+                          className={`text-sm leading-relaxed prose prose-sm max-w-none ${
+                            message.sender === 'ai' ? 'prose-gray' : ''
+                          }`}
                           dangerouslySetInnerHTML={{
                             __html: message.sender === 'ai' ? convertMarkdownToHTML(message.content) : message.content
                           }}
