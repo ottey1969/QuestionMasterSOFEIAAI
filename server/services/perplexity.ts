@@ -93,12 +93,20 @@ export async function searchWithPerplexity(query: string): Promise<string> {
 - **Statistical Analysis**: Latest demographics, economic indicators, performance metrics
 
 ## 📋 PREMIUM OUTPUT FORMAT:
-- **Executive Summary**: Key findings and strategic implications
+- **Executive Summary**: Key findings and strategic implications upfront
 - **Live Data Points**: 2024-2025 statistics with source attribution
 - **Competitive Analysis**: Market positioning and opportunity gaps
 - **Regulatory Landscape**: Government policies and compliance requirements
+- **C.R.A.F.T Research Method**:
+  - **Cut irrelevant data**: Focus on actionable intelligence
+  - **Review sources**: Cross-verify government and academic data
+  - **Add visual structure**: Bullet points, numbered findings, clear sections
+  - **Fact-check everything**: Verify claims against multiple sources
+  - **Trust-build**: Use authoritative citations and transparent methodology
 - **Strategic Recommendations**: Actionable next steps based on research
 - **Professional Citations**: Numbered references with direct links
+- **Trend Analysis**: Emerging patterns and future implications
+- **Risk Assessment**: Potential challenges and market shifts
 
 ## 🎯 AVOID AT ALL COSTS:
 - Outdated information (pre-2024)

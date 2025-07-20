@@ -135,12 +135,13 @@ Preferred communication style: Simple, everyday language.
 - **Google AI Overview Optimization**: All content now optimized for modern search engines and AI chatbots
 - **HTML Formatting**: All outputs include proper HTML structure with tables, links, and professional formatting
 
-### January 20, 2025 - ELITE CREDIT-TIER PROMPTS
-- **1-Credit General Questions**: Lightning-fast responses with step-by-step reasoning, code execution, and multi-domain expertise
-- **2-Credit SEO/Research**: Live Google research + ranking-ready content with competitor analysis and semantic optimization
-- **3-Credit Grant Writing**: Professional proposals with SMART objectives, detailed budgets, risk assessments, and funding success strategies
-- **Maximum Value Optimization**: Each service delivers exceptional value matching credit cost through depth and professional excellence
-- **Credit-Justified Quality**: Prompts designed to provide clear value proposition for each pricing tier
+### January 20, 2025 - ELITE CREDIT-TIER PROMPTS WITH C.R.A.F.T FRAMEWORK
+- **1-Credit General Questions**: Lightning-fast responses with step-by-step reasoning, code execution, C.R.A.F.T methodology, and multi-domain expertise
+- **2-Credit SEO/Research**: Complete C.R.A.F.T framework implementation with live Google research, competitor analysis, HTML-ready content, and semantic optimization
+- **3-Credit Grant Writing**: Professional proposals with full C.R.A.F.T methodology, SMART objectives, detailed budgets, and strategic positioning for funding success
+- **Julia McCoy's C.R.A.F.T Framework**: Cut fluff, Review & optimize, Add visuals, Fact-check, Trust-build - fully integrated across all services
+- **Maximum Value Optimization**: Each service delivers exceptional value matching credit cost through depth, C.R.A.F.T excellence, and professional implementation
+- **Complete Content Protocol**: Country targeting, competitor analysis, semantic research, HTML formatting, and copy-paste ready output
 
 ## Deployment Strategy
 
