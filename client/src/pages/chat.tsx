@@ -192,6 +192,9 @@ export default function Chat() {
     setIsLoading(true);
     setIsThinking(true);
     
+    // Show immediate feedback that message is being sent
+    setNewMessage("");
+    
     try {
       // Send via WebSocket for real-time response
       if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -227,8 +230,6 @@ export default function Chat() {
         };
         setMessages(prev => [...prev, aiMessage]);
       }
-      
-      setNewMessage("");
     } catch (error: any) {
       toast({
         title: "Failed to send message",
@@ -266,7 +267,7 @@ export default function Chat() {
 
       {/* Chat Container */}
       <div className="max-w-4xl mx-auto p-4">
-        <Card className="h-[calc(100vh-200px)] flex flex-col shadow-lg">
+        <Card className="flex flex-col shadow-lg">
           <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />
@@ -279,7 +280,7 @@ export default function Chat() {
           </CardHeader>
           
           <CardContent className="flex-1 flex flex-col p-0">
-            <ScrollArea className="flex-1 p-4">
+            <div className="flex-1 p-4 max-h-[70vh] overflow-y-auto">
               {messages.length === 0 ? (
                 <div className="text-center text-gray-500 mt-12">
                   <div className="p-4 bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
@@ -385,7 +386,7 @@ export default function Chat() {
                 </div>
               )}
               <div ref={messagesEndRef} />
-            </ScrollArea>
+            </div>
             
             <form onSubmit={handleSendMessage} className="p-4 border-t bg-gray-50">
               <div className="flex gap-2">
