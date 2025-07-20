@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, MessageCircle, Zap, Brain } from "lucide-react";
+import { Send, MessageCircle, Zap, Brain, Copy, Check } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
@@ -12,6 +12,8 @@ interface Message {
   content: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+  service?: string;
+  creditsUsed?: number;
 }
 
 export default function Chat() {
@@ -19,6 +21,7 @@ export default function Chat() {
   const [newMessage, setNewMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const { sessionId } = useAuth();
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -26,6 +29,66 @@ export default function Chat() {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Function to strip markdown formatting and convert to plain text
+  const stripMarkdown = (text: string): string => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold **text**
+      .replace(/\*(.*?)\*/g, '$1') // Remove italic *text*
+      .replace(/`(.*?)`/g, '$1') // Remove inline code `text`
+      .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+      .replace(/#{1,6}\s*(.*)/g, '$1') // Remove headers
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links [text](url)
+      .replace(/^\s*[-*+]\s+/gm, '') // Remove bullet points
+      .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered lists
+      .replace(/\n{3,}/g, '\n\n') // Replace multiple newlines with double
+      .trim();
+  };
+
+  // Function to convert plain text to HTML with basic formatting
+  const convertToHTML = (text: string): string => {
+    return text
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      .replace(/^(.*)$/, '<p>$1</p>');
+  };
+
+  const copyAsHTML = async (message: Message) => {
+    try {
+      const htmlContent = convertToHTML(message.content);
+      await navigator.clipboard.writeText(htmlContent);
+      setCopiedMessageId(message.id);
+      toast({
+        title: "Copied as HTML",
+        description: "Response copied to clipboard in HTML format.",
+      });
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    } catch (error) {
+      toast({
+        title: "Copy failed",
+        description: "Unable to copy to clipboard.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const copyAsText = async (message: Message) => {
+    try {
+      await navigator.clipboard.writeText(message.content);
+      setCopiedMessageId(message.id);
+      toast({
+        title: "Copied as text",
+        description: "Response copied to clipboard.",
+      });
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    } catch (error) {
+      toast({
+        title: "Copy failed",
+        description: "Unable to copy to clipboard.",
+        variant: "destructive",
+      });
+    }
   };
 
   useEffect(() => {
@@ -52,9 +115,11 @@ export default function Chat() {
         if (data.type === 'response') {
           const aiMessage: Message = {
             id: Date.now().toString(),
-            content: data.content,
+            content: stripMarkdown(data.content),
             sender: 'ai',
-            timestamp: new Date()
+            timestamp: new Date(),
+            service: data.service,
+            creditsUsed: data.creditsUsed
           };
           setMessages(prev => [...prev, aiMessage]);
         }
@@ -119,9 +184,11 @@ export default function Chat() {
         const data = await response.json();
         const aiMessage: Message = {
           id: Date.now().toString(),
-          content: data.response,
+          content: stripMarkdown(data.response),
           sender: 'ai',
-          timestamp: new Date()
+          timestamp: new Date(),
+          service: data.service,
+          creditsUsed: data.creditsUsed
         };
         setMessages(prev => [...prev, aiMessage]);
       }
@@ -200,7 +267,57 @@ export default function Chat() {
                             : 'bg-gray-100 text-gray-900 border'
                         }`}
                       >
-                        <p className="text-sm leading-relaxed">{message.content}</p>
+                        <div className="whitespace-pre-wrap text-sm leading-relaxed font-mono">
+                          {message.content}
+                        </div>
+                        
+                        {/* AI Message Footer with Service Info and Copy Buttons */}
+                        {message.sender === 'ai' && (
+                          <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-200">
+                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                              {message.service && (
+                                <span className="bg-gray-200 px-2 py-1 rounded text-xs">
+                                  {message.service}
+                                </span>
+                              )}
+                              {message.creditsUsed && (
+                                <span className="text-xs">
+                                  {message.creditsUsed} credit{message.creditsUsed > 1 ? 's' : ''}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyAsText(message)}
+                                className="h-7 px-2 text-xs hover:bg-gray-200"
+                              >
+                                {copiedMessageId === message.id ? (
+                                  <Check className="h-3 w-3" />
+                                ) : (
+                                  <Copy className="h-3 w-3" />
+                                )}
+                                <span className="ml-1">Text</span>
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyAsHTML(message)}
+                                className="h-7 px-2 text-xs hover:bg-gray-200"
+                              >
+                                {copiedMessageId === message.id ? (
+                                  <Check className="h-3 w-3" />
+                                ) : (
+                                  <Copy className="h-3 w-3" />
+                                )}
+                                <span className="ml-1">HTML</span>
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Timestamp */}
                         <p className={`text-xs mt-2 ${
                           message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
                         }`}>
