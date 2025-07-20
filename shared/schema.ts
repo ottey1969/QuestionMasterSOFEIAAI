@@ -83,6 +83,21 @@ export const securityLogs = pgTable("security_logs", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
+// IP Credits table for anonymous users
+export const ipCredits = pgTable("ip_credits", {
+  id: varchar("id").primaryKey().notNull(),
+  ipAddress: varchar("ip_address").notNull().unique(),
+  email: varchar("email"), // Optional email for tracking/contact
+  credits: integer("credits").default(5).notNull(),
+  isUnlimited: boolean("is_unlimited").default(false).notNull(),
+  lastUsed: timestamp("last_used").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type IpCredit = typeof ipCredits.$inferSelect;
+export type InsertIpCredit = typeof ipCredits.$inferInsert;
+
 export type InsertCreditTransaction = typeof creditTransactions.$inferInsert;
 export type CreditTransaction = typeof creditTransactions.$inferSelect;
 

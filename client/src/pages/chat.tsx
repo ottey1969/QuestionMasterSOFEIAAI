@@ -23,6 +23,8 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | 'unlimited'>(5);
+  const [userIp, setUserIp] = useState<string>('');
   const { sessionId } = useAuth();
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -258,6 +260,11 @@ export default function Chat() {
                 </h1>
                 <p className="text-sm text-gray-600">
                   Powered by Advanced AI • {isConnected ? '🟢 Connected' : '🔴 Disconnected'}
+                  {credits !== undefined && (
+                    <span className="ml-2">
+                      • Credits: {credits === 'unlimited' ? '♾️ Unlimited' : `${credits} remaining`}
+                    </span>
+                  )}
                 </p>
               </div>
             </div>

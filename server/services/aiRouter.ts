@@ -101,7 +101,10 @@ export function detectServiceType(message: string): ServiceType {
   // Check for research/search indicators
   if (lowerMessage.includes('research') || lowerMessage.includes('search') || 
       lowerMessage.includes('find information') || lowerMessage.includes('latest') ||
-      lowerMessage.includes('news') || lowerMessage.includes('current')) {
+      lowerMessage.includes('news') || lowerMessage.includes('current') ||
+      lowerMessage.includes('government') || lowerMessage.includes('official') ||
+      lowerMessage.includes('statistics') || lowerMessage.includes('data') ||
+      lowerMessage.includes('study') || lowerMessage.includes('report')) {
     return 'research';
   }
   
@@ -123,5 +126,5 @@ export function detectServiceType(message: string): ServiceType {
 }
 
 export function formatAIResponse(response: string, service: string, creditsUsed: number): string {
-  return `**AI Response** (${service} • ${creditsUsed} credit${creditsUsed > 1 ? 's' : ''})\n\n${response}`;
+  return `**🤖 Sofeia AI Response** (${service} • ${creditsUsed} credit${creditsUsed > 1 ? 's' : ''})\n\n${response}`;
 }

@@ -6,10 +6,13 @@ The world's most advanced autonomous AI system, combining multi-agent reasoning,
 
 - **Multi-AI Integration**: Powered by Groq, Perplexity, and Anthropic APIs
 - **Intelligent Routing**: Automatically selects the best AI service based on query type
-- **Real-time Chat**: WebSocket-based communication with loading states
-- **Professional Formatting**: HTML-rendered responses with headings, bullets, and copy functions
-- **Three Specialized Services**:
+- **IP-Based Credit System**: 5 questions max per IP without registration, admin controls available
+- **Government & High-DR Sources**: Prioritizes .gov, .edu, and authoritative domains for research
+- **Real-time Chat**: WebSocket-based communication with loading states and credit tracking
+- **Professional Formatting**: HTML-rendered responses with headings, bullets, copy functions, and citations
+- **Four Specialized Services**:
   - General Questions (Groq llama3-8b-8192) - 1 credit
+  - Research & Citations (Perplexity with government sources) - 1 credit
   - SEO & AI Content (Perplexity + Anthropic Claude-4-Sonnet) - 2 credits
   - Grant Writing (Anthropic Claude-4-Sonnet) - 3 credits
 
@@ -64,6 +67,8 @@ PERPLEXITY_API_KEY=your-perplexity-api-key
 ANTHROPIC_API_KEY=your-anthropic-api-key
 PAYPAL_CLIENT_ID=your-paypal-client-id
 PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+ADMIN_KEY=your-admin-secret-key
+ADMIN_IP_ADDRESS=your-admin-ip-for-unlimited-access
 ```
 
 ## Deployment
@@ -94,6 +99,55 @@ See detailed deployment guide in `DEPLOYMENT.md`.
 - Research Queries: 1 credit  
 - SEO Content: 2 credits
 - Grant Writing: 3 credits
+
+## Admin Credit Management
+
+The platform includes a powerful admin system for managing IP-based credits:
+
+### Admin API Endpoints
+
+**Add Credits to IP Address:**
+```bash
+curl -X POST http://localhost:5000/api/admin/credits/add \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ipAddress": "192.168.1.100",
+    "credits": 10,
+    "email": "user@example.com",
+    "adminKey": "your-admin-key"
+  }'
+```
+
+**Set Unlimited Credits:**
+```bash
+curl -X POST http://localhost:5000/api/admin/credits/unlimited \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ipAddress": "192.168.1.100",
+    "unlimited": true,
+    "adminKey": "your-admin-key"
+  }'
+```
+
+**List All IP Credits:**
+```bash
+curl "http://localhost:5000/api/admin/credits/list?adminKey=your-admin-key"
+```
+
+### Credit System Features
+
+- **Anonymous Access**: 5 questions per IP address without registration
+- **Admin IP**: Unlimited access for configured admin IP address  
+- **Credit Tracking**: Real-time credit deduction and display
+- **Contact Integration**: Automatic WhatsApp contact when credits exhausted
+- **Email Tracking**: Optional email association for IP addresses
+
+### User Experience
+
+When users exhaust their credits, they receive:
+- Clear error message with remaining credits (0)
+- WhatsApp contact link: +31 628 073 996  
+- Pre-filled message with their IP address for admin assistance
 
 ## Contributing
 

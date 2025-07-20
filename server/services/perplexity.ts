@@ -11,7 +11,7 @@ export async function searchWithPerplexity(query: string): Promise<string> {
         messages: [
           {
             role: 'system',
-            content: 'You are Sofeia AI research assistant. Provide accurate, well-researched information with citations when possible. Be concise but comprehensive.'
+            content: 'You are Sofeia AI research assistant. Prioritize information from government sources (.gov), educational institutions (.edu), and high-authority domains. Avoid competitor content. Provide accurate, well-researched information with direct citations from official sources when possible. Be concise but comprehensive.'
           },
           {
             role: 'user',
@@ -22,7 +22,24 @@ export async function searchWithPerplexity(query: string): Promise<string> {
         temperature: 0.2,
         top_p: 0.9,
         return_citations: true,
+        return_images: false,
+        return_related_questions: false,
         search_recency_filter: 'month',
+        search_domain_filter: [
+          "gov",
+          "edu", 
+          "org",
+          "wikipedia.org",
+          "reuters.com",
+          "bbc.com",
+          "bloomberg.com",
+          "nature.com",
+          "science.org",
+          "who.int",
+          "fda.gov",
+          "cdc.gov",
+          "nih.gov"
+        ],
         stream: false
       }),
     });
@@ -36,8 +53,8 @@ export async function searchWithPerplexity(query: string): Promise<string> {
     
     // Add citations if available
     if (data.citations && data.citations.length > 0) {
-      result += "\n\nSources:\n" + data.citations.slice(0, 3).map((citation: string, index: number) => 
-        `${index + 1}. ${citation}`
+      result += "\n\n**📚 Sources:**\n" + data.citations.slice(0, 5).map((citation: string, index: number) => 
+        `${index + 1}. [${citation}](${citation})`
       ).join('\n');
     }
     

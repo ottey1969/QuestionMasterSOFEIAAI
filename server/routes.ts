@@ -20,17 +20,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create WebSocket server for real-time chat
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
   
-  wss.on('connection', (ws) => {
+  wss.on('connection', (ws, req) => {
     console.log('New WebSocket connection established');
+    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.connection.remoteAddress || 'unknown';
+    console.log('WebSocket connection from IP:', ip);
     
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
         console.log('WebSocket message received:', message);
         
-        // Process AI chat messages
+        // Process AI chat messages with IP credit system
         if (message.type === 'chat') {
           try {
+            // Check IP credits first
+            let ipCredit = await storage.getIpCredits(ip);
+            if (!ipCredit) {
+              ipCredit = await storage.createIpCredits(ip);
+            }
+            
+            // Check if IP has enough credits (unless unlimited)
+            if (!ipCredit.isUnlimited && ipCredit.credits <= 0) {
+              ws.send(JSON.stringify({
+                type: 'error',
+                content: 'No credits remaining. Contact admin to add more credits to your IP address.',
+                credits: ipCredit.credits,
+                contactInfo: {
+                  whatsapp: '+31 628 073 996',
+                  message: `Hi, I need more credits for Sofeia AI. My IP address is: ${ip}`
+                }
+              }));
+              return;
+            }
+            
             const serviceType = detectServiceType(message.content);
             const aiRequest: AIRequest = {
               type: serviceType,
@@ -40,12 +62,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const result = await processAIRequest(aiRequest);
             const formattedResponse = formatAIResponse(result.response, result.service, result.creditsUsed);
             
+            // Deduct credits for non-unlimited IPs
+            if (!ipCredit.isUnlimited) {
+              const newCredits = ipCredit.credits - result.creditsUsed;
+              await storage.updateIpCredits(ip, Math.max(0, newCredits));
+            }
+            
             ws.send(JSON.stringify({ 
               type: 'response', 
               content: formattedResponse,
               timestamp: new Date().toISOString(),
               service: result.service,
-              creditsUsed: result.creditsUsed
+              creditsUsed: result.creditsUsed,
+              creditsRemaining: ipCredit.isUnlimited ? 'unlimited' : Math.max(0, ipCredit.credits - result.creditsUsed)
             }));
           } catch (error: any) {
             console.error('AI processing error:', error);
@@ -73,15 +102,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   });
 
-  // Simple user session for chat (no authentication)
+  // Simple user session for chat (no authentication) with credit check
   app.get('/api/user/session', async (req, res) => {
-    // Generate a simple session ID for anonymous users
+    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.connection.remoteAddress || 'unknown';
+    
+    // Check or create IP credits
+    let ipCredit = await storage.getIpCredits(ip);
+    if (!ipCredit) {
+      ipCredit = await storage.createIpCredits(ip);
+    }
+    
     const sessionId = Math.random().toString(36).substring(2, 15);
     res.json({ 
       sessionId,
       isAnonymous: true,
-      message: "Anonymous chat session created"
+      message: "Anonymous chat session created",
+      credits: ipCredit.credits,
+      isUnlimited: ipCredit.isUnlimited,
+      ip: ip // For debugging/admin purposes
     });
+  });
+
+  // Check IP credits endpoint
+  app.get('/api/credits/check', async (req, res) => {
+    try {
+      const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.connection.remoteAddress || 'unknown';
+      
+      let ipCredit = await storage.getIpCredits(ip);
+      if (!ipCredit) {
+        ipCredit = await storage.createIpCredits(ip);
+      }
+      
+      res.json({
+        credits: ipCredit.credits,
+        isUnlimited: ipCredit.isUnlimited,
+        email: ipCredit.email,
+        ip: ip
+      });
+    } catch (error: any) {
+      console.error('Check credits error:', error);
+      res.status(500).json({ error: 'Failed to check credits' });
+    }
   });
 
   // PayPal routes
@@ -97,10 +158,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await capturePaypalOrder(req, res);
   });
 
-  // AI chat endpoint with intelligent routing
+  // AI chat endpoint with IP credit system
   app.post('/api/chat/message', async (req, res) => {
     try {
       const { message, sessionId } = messageSchema.parse(req.body);
+      const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.connection.remoteAddress || 'unknown';
+      
+      // Check IP credits first
+      let ipCredit = await storage.getIpCredits(ip);
+      if (!ipCredit) {
+        ipCredit = await storage.createIpCredits(ip);
+      }
+      
+      // Check if IP has enough credits (unless unlimited)
+      if (!ipCredit.isUnlimited && ipCredit.credits <= 0) {
+        return res.status(429).json({ 
+          error: 'No credits remaining. Contact admin to add more credits to your IP address.',
+          credits: ipCredit.credits,
+          contactInfo: {
+            whatsapp: '+31 628 073 996',
+            message: `Hi, I need more credits for Sofeia AI. My IP address is: ${ip}`
+          }
+        });
+      }
       
       // Detect service type and process with appropriate AI
       const serviceType = detectServiceType(message);
@@ -112,12 +192,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await processAIRequest(aiRequest);
       const formattedResponse = formatAIResponse(result.response, result.service, result.creditsUsed);
       
+      // Deduct credits for non-unlimited IPs
+      if (!ipCredit.isUnlimited) {
+        const newCredits = ipCredit.credits - result.creditsUsed;
+        await storage.updateIpCredits(ip, Math.max(0, newCredits));
+      }
+      
       res.json({ 
         response: formattedResponse,
         sessionId,
         timestamp: new Date().toISOString(),
         service: result.service,
-        creditsUsed: result.creditsUsed
+        creditsUsed: result.creditsUsed,
+        creditsRemaining: ipCredit.isUnlimited ? 'unlimited' : Math.max(0, ipCredit.credits - result.creditsUsed)
       });
     } catch (error: any) {
       if (error instanceof z.ZodError) {
@@ -154,6 +241,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       console.error("Error sending message:", error);
       res.status(500).json({ message: "Failed to send message" });
+    }
+  });
+
+  // Admin routes for IP credit management
+  app.post('/api/admin/credits/add', async (req, res) => {
+    try {
+      const { ipAddress, credits, email, adminKey } = req.body;
+      
+      // Simple admin key check (should use proper authentication in production)
+      if (adminKey !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ error: 'Unauthorized' });
+      }
+      
+      if (!ipAddress || typeof credits !== 'number') {
+        return res.status(400).json({ error: 'IP address and credits amount required' });
+      }
+      
+      const result = await storage.addCreditsToIp(ipAddress, credits, email);
+      res.json({ 
+        message: `Added ${credits} credits to IP ${ipAddress}`,
+        newTotal: result.credits,
+        email: result.email
+      });
+    } catch (error: any) {
+      console.error('Admin add credits error:', error);
+      res.status(500).json({ error: 'Failed to add credits' });
+    }
+  });
+
+  app.post('/api/admin/credits/unlimited', async (req, res) => {
+    try {
+      const { ipAddress, unlimited, adminKey } = req.body;
+      
+      if (adminKey !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ error: 'Unauthorized' });
+      }
+      
+      if (!ipAddress) {
+        return res.status(400).json({ error: 'IP address required' });
+      }
+      
+      const result = await storage.setUnlimitedForIp(ipAddress, unlimited === true);
+      res.json({ 
+        message: `Set IP ${ipAddress} to ${unlimited ? 'unlimited' : 'limited'} credits`,
+        isUnlimited: result?.isUnlimited,
+        credits: result?.credits
+      });
+    } catch (error: any) {
+      console.error('Admin set unlimited error:', error);
+      res.status(500).json({ error: 'Failed to set unlimited status' });
+    }
+  });
+
+  app.get('/api/admin/credits/list', async (req, res) => {
+    try {
+      const { adminKey } = req.query;
+      
+      if (adminKey !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ error: 'Unauthorized' });
+      }
+      
+      const allCredits = await storage.getAllIpCredits();
+      res.json(allCredits);
+    } catch (error: any) {
+      console.error('Admin list credits error:', error);
+      res.status(500).json({ error: 'Failed to list credits' });
     }
   });
 

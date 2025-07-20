@@ -4,6 +4,7 @@ import {
   aiRequests,
   chatMessages,
   securityLogs,
+  ipCredits,
   type User,
   type UpsertUser,
   type InsertCreditTransaction,
@@ -14,6 +15,8 @@ import {
   type ChatMessage,
   type InsertSecurityLog,
   type SecurityLog,
+  type IpCredit,
+  type InsertIpCredit,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql } from "drizzle-orm";
@@ -42,6 +45,14 @@ export interface IStorage {
   addSecurityLog(log: InsertSecurityLog): Promise<SecurityLog>;
   getSecurityLogs(): Promise<SecurityLog[]>;
   getFlaggedIPs(): Promise<{ ipAddress: string; count: number }[]>;
+  
+  // IP Credit operations for anonymous users
+  getIpCredits(ipAddress: string): Promise<IpCredit | undefined>;
+  createIpCredits(ipAddress: string, email?: string): Promise<IpCredit>;
+  updateIpCredits(ipAddress: string, credits: number): Promise<IpCredit | undefined>;
+  addCreditsToIp(ipAddress: string, amount: number, email?: string): Promise<IpCredit>;
+  setUnlimitedForIp(ipAddress: string, unlimited: boolean): Promise<IpCredit | undefined>;
+  getAllIpCredits(): Promise<IpCredit[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -166,6 +177,79 @@ export class DatabaseStorage implements IStorage {
       .where(eq(securityLogs.riskLevel, 'high'))
       .groupBy(securityLogs.ipAddress)
       .orderBy(desc(sql`count(*)`));
+  }
+
+  // IP Credit operations for anonymous users
+  async getIpCredits(ipAddress: string): Promise<IpCredit | undefined> {
+    const [record] = await db.select().from(ipCredits).where(eq(ipCredits.ipAddress, ipAddress));
+    return record;
+  }
+
+  async createIpCredits(ipAddress: string, email?: string): Promise<IpCredit> {
+    const adminIp = process.env.ADMIN_IP_ADDRESS || "127.0.0.1"; // Configure in env
+    const isUnlimited = ipAddress === adminIp;
+    
+    const [record] = await db
+      .insert(ipCredits)
+      .values({
+        id: `ip_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        ipAddress,
+        email,
+        credits: isUnlimited ? 999999 : 5,
+        isUnlimited,
+      })
+      .returning();
+    return record;
+  }
+
+  async updateIpCredits(ipAddress: string, credits: number): Promise<IpCredit | undefined> {
+    const [record] = await db
+      .update(ipCredits)
+      .set({ 
+        credits, 
+        lastUsed: new Date(),
+        updatedAt: new Date() 
+      })
+      .where(eq(ipCredits.ipAddress, ipAddress))
+      .returning();
+    return record;
+  }
+
+  async addCreditsToIp(ipAddress: string, amount: number, email?: string): Promise<IpCredit> {
+    const existing = await this.getIpCredits(ipAddress);
+    
+    if (existing) {
+      const newCredits = existing.credits + amount;
+      const [updated] = await db
+        .update(ipCredits)
+        .set({ 
+          credits: newCredits,
+          email: email || existing.email,
+          updatedAt: new Date() 
+        })
+        .where(eq(ipCredits.ipAddress, ipAddress))
+        .returning();
+      return updated;
+    } else {
+      return await this.createIpCredits(ipAddress, email);
+    }
+  }
+
+  async setUnlimitedForIp(ipAddress: string, unlimited: boolean): Promise<IpCredit | undefined> {
+    const [record] = await db
+      .update(ipCredits)
+      .set({ 
+        isUnlimited: unlimited,
+        credits: unlimited ? 999999 : 5,
+        updatedAt: new Date() 
+      })
+      .where(eq(ipCredits.ipAddress, ipAddress))
+      .returning();
+    return record;
+  }
+
+  async getAllIpCredits(): Promise<IpCredit[]> {
+    return await db.select().from(ipCredits).orderBy(desc(ipCredits.lastUsed));
   }
 }
 
