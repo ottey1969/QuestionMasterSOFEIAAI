@@ -129,19 +129,19 @@ export default function Landing() {
                       <li>• All AI services included</li>
                       <li>• Email support</li>
                     </ul>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
                       <Button 
                         onClick={() => handleContactAdmin('starter')}
-                        className="bg-green-500 hover:bg-green-600 text-white w-full"
+                        className="bg-green-500 hover:bg-green-600 text-white flex-1"
                       >
                         <MessageCircle className="mr-2" size={16} />
-                        Contact via WhatsApp
+                        WhatsApp
                       </Button>
                       <Button 
                         onClick={handlePayPalPurchase}
-                        className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                        className="bg-blue-600 hover:bg-blue-700 text-white flex-1"
                       >
-                        Pay with PayPal
+                        PayPal
                       </Button>
                     </div>
                   </CardContent>
@@ -163,19 +163,19 @@ export default function Landing() {
                       <li>• Priority support</li>
                       <li>• Bulk discounts available</li>
                     </ul>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
                       <Button 
                         onClick={() => handleContactAdmin('professional')}
-                        className="bg-green-500 hover:bg-green-600 text-white w-full"
+                        className="bg-green-500 hover:bg-green-600 text-white flex-1"
                       >
                         <MessageCircle className="mr-2" size={16} />
-                        Contact via WhatsApp
+                        WhatsApp
                       </Button>
                       <Button 
                         onClick={handlePayPalPurchase}
-                        className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                        className="bg-blue-600 hover:bg-blue-700 text-white flex-1"
                       >
-                        Pay with PayPal
+                        PayPal
                       </Button>
                     </div>
                   </CardContent>
