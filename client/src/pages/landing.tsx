@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Search, FileText, Shield, Zap, Globe, MessageCircle, Heart } from "lucide-react";
+import { Brain, Search, FileText, Shield, Zap, Globe, MessageCircle, Heart, Loader2 } from "lucide-react";
 
 export default function Landing() {
+  const [isStartingChat, setIsStartingChat] = useState(false);
+  const [loadingText, setLoadingText] = useState("");
+
   const handleStartChat = () => {
-    window.location.href = "/chat";
+    setIsStartingChat(true);
+    setLoadingText("Initializing Sofeia AI...");
+    
+    setTimeout(() => setLoadingText("Loading chat interface..."), 800);
+    setTimeout(() => setLoadingText("Connecting to AI services..."), 1600);
+    setTimeout(() => setLoadingText("Almost ready..."), 2400);
+    setTimeout(() => {
+      window.location.href = "/chat";
+    }, 3000);
   };
 
   const handleWhatsApp = () => {
@@ -37,8 +48,19 @@ export default function Landing() {
               >
                 Admin
               </Button>
-              <Button onClick={handleStartChat} className="bg-primary text-white hover:bg-primary/90">
-                Start Chatting
+              <Button 
+                onClick={handleStartChat} 
+                className="bg-primary text-white hover:bg-primary/90"
+                disabled={isStartingChat}
+              >
+                {isStartingChat ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Starting...
+                  </>
+                ) : (
+                  "Start Chatting"
+                )}
               </Button>
             </div>
           </div>
@@ -66,9 +88,19 @@ export default function Landing() {
                 onClick={handleStartChat}
                 size="lg"
                 className="bg-primary text-white hover:bg-primary/90 text-lg px-8 py-4"
+                disabled={isStartingChat}
               >
-                <Zap className="mr-2" size={20} />
-                Start Chatting Now
+                {isStartingChat ? (
+                  <>
+                    <Loader2 className="mr-2 animate-spin" size={20} />
+                    {loadingText || "Starting..."}
+                  </>
+                ) : (
+                  <>
+                    <Zap className="mr-2" size={20} />
+                    Start Chatting Now
+                  </>
+                )}
               </Button>
               
               <div className="flex items-center space-x-4">

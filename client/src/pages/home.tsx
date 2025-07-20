@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Brain, Search, FileText, Coins, MessageCircle, Heart, Settings, 
   Users, BarChart3, Shield, Moon, Sun, LogOut, CreditCard, History,
-  UserCheck, Globe, Zap
+  UserCheck, Globe, Zap, Loader2
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -23,8 +23,10 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
+  const [loadingService, setLoadingService] = useState<ServiceType | null>(null);
+  const [loadingText, setLoadingText] = useState("");
   
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
 
   const handleLogout = () => {
@@ -42,6 +44,48 @@ export default function Home() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const handleServiceClick = (serviceType: ServiceType) => {
+    setLoadingService(serviceType);
+    
+    // Set progressive loading messages based on service type
+    const messages = {
+      general: [
+        "Initializing Groq AI...",
+        "Connecting to knowledge base...",
+        "Preparing question interface...",
+        "Ready to answer!"
+      ],
+      seo: [
+        "Initializing Perplexity Research...",
+        "Connecting to Anthropic Claude...",
+        "Loading SEO optimization tools...",
+        "Preparing content generator..."
+      ],
+      grant: [
+        "Initializing Claude-4-Sonnet...",
+        "Loading grant templates...", 
+        "Preparing proposal structure...",
+        "Ready for professional writing!"
+      ]
+    };
+
+    const serviceMessages = messages[serviceType];
+    setLoadingText(serviceMessages[0]);
+
+    serviceMessages.forEach((message, index) => {
+      setTimeout(() => {
+        if (index < serviceMessages.length - 1) {
+          setLoadingText(serviceMessages[index + 1]);
+        }
+      }, (index + 1) * 800);
+    });
+
+    // Navigate to chat after loading sequence
+    setTimeout(() => {
+      window.location.href = `/chat?service=${serviceType}`;
+    }, serviceMessages.length * 800 + 500);
   };
 
   const serviceCards = [
@@ -82,6 +126,30 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+      {/* Loading Overlay */}
+      {loadingService && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md mx-4 shadow-2xl">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Loader2 className="h-8 w-8 text-white animate-spin" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                Launching {loadingService === 'general' ? 'General Questions' : loadingService === 'seo' ? 'SEO & AI Content' : 'Grant Writing'}
+              </h3>
+              <p className="text-blue-600 dark:text-blue-400 font-medium mb-4">
+                {loadingText}
+              </p>
+              <div className="flex justify-center space-x-1">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Navigation */}
       <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,7 +166,7 @@ export default function Home() {
               <div className="hidden md:flex items-center space-x-2 bg-primary/10 dark:bg-primary/20 px-3 py-1 rounded-full">
                 <Coins className="text-yellow-500" size={16} />
                 <span className="text-sm font-medium dark:text-white">
-                  {user?.credits || 0} Credits
+                  IP Credits Available
                 </span>
               </div>
               
@@ -154,7 +222,7 @@ export default function Home() {
       <section className="bg-gradient-to-br from-primary/5 via-purple-500/5 to-primary/10 dark:from-primary/10 dark:via-purple-500/10 dark:to-primary/20 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Welcome back, <span className="text-primary">{user?.firstName}</span>
+            Welcome to Sofeia AI
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             Choose your AI service and let our autonomous agents handle the rest
@@ -163,7 +231,7 @@ export default function Home() {
           <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center space-x-2">
               <Coins className="text-yellow-500" size={16} />
-              <span>{user?.credits || 0} Credits Available</span>
+              <span>IP-Based Credit System</span>
             </div>
             <div className="flex items-center space-x-2">
               <Shield className="text-green-500" size={16} />
@@ -187,8 +255,7 @@ export default function Home() {
               return (
                 <Card 
                   key={service.type}
-                  className={`bg-gradient-to-br ${service.gradient} ${service.borderColor} hover:shadow-xl transition-all transform hover:-translate-y-1 cursor-pointer dark:from-gray-800 dark:to-gray-700 dark:border-gray-600`}
-                  onClick={() => setActiveModal(service.type)}
+                  className={`bg-gradient-to-br ${service.gradient} ${service.borderColor} hover:shadow-xl transition-all transform hover:-translate-y-1 ${loadingService === null ? 'cursor-pointer' : 'cursor-wait'} dark:from-gray-800 dark:to-gray-700 dark:border-gray-600 ${loadingService === service.type ? 'ring-2 ring-blue-500 animate-pulse' : ''}`}
                 >
                   <CardContent className="p-8">
                     <div className="flex items-center justify-between mb-6">
@@ -215,9 +282,17 @@ export default function Home() {
                     
                     <Button 
                       className={`w-full ${service.color} hover:opacity-90 text-white`}
-                      disabled={!user || user.credits < service.credits}
+                      disabled={!isAuthenticated || loadingService !== null}
+                      onClick={() => handleServiceClick(service.type)}
                     >
-                      {user && user.credits >= service.credits ? 'Launch Service' : 'Insufficient Credits'}
+                      {loadingService === service.type ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          {loadingText}
+                        </>
+                      ) : (
+                        isAuthenticated ? 'Launch Service' : 'Login Required'
+                      )}
                     </Button>
                   </CardContent>
                 </Card>
