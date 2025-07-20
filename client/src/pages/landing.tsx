@@ -13,7 +13,7 @@ export default function Landing() {
   };
 
   const handleDonation = () => {
-    window.open("https://paypal.me/sofeia", "_blank");
+    window.open("https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US", "_blank");
   };
 
   return (
