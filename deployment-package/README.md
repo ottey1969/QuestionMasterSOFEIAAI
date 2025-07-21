@@ -1,67 +1,55 @@
-# Sofeia AI Agent v2025
+# 🤖 Sofeia AI Agent v2025 - Production Ready
 
-> **The World's Most Advanced Autonomous AI Agent with RankMath SEO & C.R.A.F.T Framework**
+**The World's Most Advanced Autonomous AI Agent Platform**
 
-A production-ready AI-powered platform featuring elite SEO optimization, C.R.A.F.T methodology, AI search engine compatibility, and professional content creation with HTML formatting.
+> Complete AI-powered solution featuring real-time research, professional content generation, and grant writing with C.R.A.F.T framework optimization.
 
-![Sofeia AI Agent](https://img.shields.io/badge/AI-Agent-blue?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Production%20Ready-green?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/sofeia-ai)
 
-## ✨ Features
+## 🚀 Features
 
-### 🤖 Elite AI Integration
-- **General Knowledge**: Groq API with HTML structure and C.R.A.F.T framework (1 credit)
-- **SEO Content**: Professional SEO content strategist with E-E-A-T optimization, RankMath 100/100 scoring, structured data implementation (2 credits)
-- **Grant Writing**: Comprehensive global grant writer with UN SDG alignment, international standards, professional proposal structure (3 credits)
+### 🧠 Advanced AI Integration
+- **Groq API** (1 credit) - Lightning-fast general questions with step-by-step reasoning
+- **Perplexity API** (2 credits) - Live research with smart country detection for government sources
+- **Anthropic Claude** (2-3 credits) - Professional content generation and grant writing
 
-### 🏆 RankMath SEO Optimization
-- **100/100 Score Protocol**: Focus keyword strategy, URL optimization, meta descriptions
-- **Content Structure**: H1/H2/H3 hierarchy, 600-1000 words, 1-2% keyword density
-- **Link Requirements**: External dofollow + internal linking for SEO juice
-- **HTML Excellence**: Professional headers, active links, inline CSS tables
+### 📈 Professional SEO & Content
+- **RankMath Optimization** - Achieve 100/100 scores with proper HTML structure
+- **C.R.A.F.T Framework** - Cut fluff, Review, Add visuals, Fact-check, Trust-build
+- **AI Search Engine Ready** - Google AI Overview, Featured Snippets, Voice Search optimization
+- **E-E-A-T Excellence** - Expertise, Experience, Authoritativeness, Trustworthiness signals
 
-### 🚀 C.R.A.F.T Framework Implementation
-- **Cut the Fluff**: Value-driven, concise content creation
-- **Review & Optimize**: Fact-checked statistics, optimized keyword placement
-- **Add Visuals**: Data tables, comparison charts, structured lists
-- **Fact-Check**: Verified claims with .gov/.edu sources
-- **Trust-Build**: Author credentials, source transparency
-
-### 🔍 AI Search Engine Optimization
-- **Google AI Overview**: Featured snippet structure, position zero targeting
-- **Voice Search**: Natural language patterns, conversational queries
-- **Semantic Signals**: LSI keywords, topic clusters, entity relationships
-- **E-E-A-T Excellence**: Expertise, Experience, Authoritativeness, Trustworthiness
-
-### 💳 Professional Credit System
+### 💰 Professional Credit System
 - **Starter Plan**: €35/month for 150 questions
-- **Professional Plan**: €300/month for 1500 questions  
-- WhatsApp integration for admin contact (+31 628 073 996)
-- Direct PayPal integration (https://paypal.me/ojgmedia)
-- Real-time email and IP collection
+- **Professional Plan**: €300/month for 1500 questions
+- **IP-Based Access**: 5 free questions per IP address
+- **PayPal Integration**: Direct payment processing
 
 ### 🌍 Smart Country Detection
-Automatically prioritizes government and high-authority sources:
+Automatically prioritizes official government sources:
 - **India**: gov.in, nic.in, rbi.org.in, sebi.gov.in
 - **USA**: .gov, fda.gov, cdc.gov, nih.gov, sec.gov
 - **UK**: .gov.uk, nhs.uk, parliament.uk
-- **12+ countries** with official domain targeting
+- **12+ other countries** with official domain targeting
 
-### 🚀 Modern Tech Stack
-- **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS
-- **Backend**: Node.js + Express + WebSocket support
-- **Database**: PostgreSQL with Drizzle ORM
-- **Authentication**: IP-based with admin controls
-- **UI**: Radix UI + shadcn/ui components
-- **Real-time**: WebSocket-based chat with comprehensive loading states
+### 🔧 Technical Excellence
+- **React 18** + **TypeScript** frontend with Vite
+- **Express.js** backend with WebSocket real-time chat
+- **PostgreSQL** database with Drizzle ORM
+- **Comprehensive Loading States** with service-specific animations
+- **Admin Controls** with IP-based unlimited access
 
-## 🎯 Quick Start
+## 📋 Quick Deploy
 
-### Prerequisites
-- Node.js 18+
-- PostgreSQL database
-- API keys: Groq, Perplexity, Anthropic, PayPal
+### 1. One-Click Deploy (Recommended)
 
-### Development Setup
+#### Deploy to Render
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/sofeia-ai)
+
+#### Deploy to Railway
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/github.com/yourusername/sofeia-ai)
+
+### 2. Manual Deployment
 
 ```bash
 # Clone repository
@@ -71,217 +59,162 @@ cd sofeia-ai
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Set environment variables (see .env.example)
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys and database URL
 
-# Initialize database
-npm run db:push
-
-# Start development server
-npm run dev
+# Build and start
+npm run build
+npm start
 ```
 
-Visit http://localhost:5000 to see the application.
+## 🔐 Environment Setup
 
-### Environment Variables
+Copy `.env.example` to `.env` and configure:
 
 ```bash
-# Database
-DATABASE_URL=postgresql://username:password@localhost:5432/sofeia_ai
-
-# Session Security
+# Core Configuration
+DATABASE_URL=postgresql://username:password@host:port/database
 SESSION_SECRET=your-64-character-random-string
 
-# AI APIs
+# AI Service APIs
 GROQ_API_KEY=gsk_your_groq_api_key
 PERPLEXITY_API_KEY=pplx-your_perplexity_key
 ANTHROPIC_API_KEY=sk-ant-your_anthropic_key
 
-# Payment
+# Payment Integration
 PAYPAL_CLIENT_ID=your_paypal_client_id
 PAYPAL_CLIENT_SECRET=your_paypal_client_secret
 
-# Admin (Pre-configured for Ottmar Francisca)
+# Pre-configured Admin Access
 ADMIN_KEY=0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
 ADMIN_IP_ADDRESS=112.198.165.82
 ```
 
-## 🚀 Deployment
+### 🔑 API Key Setup
 
-### One-Click Deploy
+1. **Groq** (Free tier available)
+   - Visit: https://console.groq.com/keys
+   - Free: 14,000 requests/day
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/sofeia-ai)
+2. **Perplexity** (Paid service)
+   - Visit: https://www.perplexity.ai/settings/api
+   - Cost: ~$0.005 per request
 
-### Manual Deployment
+3. **Anthropic** (Free tier + paid)
+   - Visit: https://console.anthropic.com
+   - Free: $5 credit, then $3-15 per million tokens
 
-See our comprehensive deployment guides:
-- [GitHub Deployment Guide](GITHUB_DEPLOYMENT.md) - Complete setup guide
-- [Quick Deployment](QUICK_DEPLOYMENT.md) - 5-minute setup
-- [Original Deployment Guide](DEPLOYMENT.md) - Detailed walkthrough
+4. **PayPal** (Business account)
+   - Visit: https://developer.paypal.com
+   - Create app and copy Client ID/Secret
 
-### Docker Deployment
+## 📊 Service Examples
 
-```bash
-# Build image
-docker build -t sofeia-ai .
-
-# Run container
-docker run -p 5000:5000 --env-file .env sofeia-ai
+### General Questions (1 Credit)
+```
+Input: "Explain artificial intelligence in 2025"
+Output: Comprehensive HTML with H1, H2, H3 headers, bullet points, copy-paste ready content
 ```
 
-## 📖 Usage
-
-### For Users
-1. Visit the landing page
-2. Choose a credit plan (Starter €35 or Professional €300)
-3. Contact admin via WhatsApp or pay through PayPal
-4. Start chatting with the AI agent
-5. Select service type: General, SEO Content, or Grant Writing
-
-### For Developers
-```javascript
-// API endpoint for chat
-POST /api/chat/message
-{
-  "message": "Your question here",
-  "sessionId": "unique-session-id"
-}
-
-// WebSocket connection
-const ws = new WebSocket('ws://localhost:5000/ws');
-ws.send(JSON.stringify({
-  type: 'chat',
-  content: 'Your message',
-  sessionId: 'session-id'
-}));
+### SEO Content (2 Credits)
+```
+Input: "Write RankMath SEO blog post about AI in healthcare"
+Output: 
+- 100/100 RankMath score optimization
+- Focus keyword strategy with power words  
+- Proper H1, H2, H3 hierarchy
+- Meta description under 160 characters
+- External dofollow links to high-authority sites
+- 600-1000 words with C.R.A.F.T framework
 ```
 
-### Admin Panel
-- URL: `/admin`
-- Key: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
-- Features: IP management, credit allocation, usage analytics
+### Grant Writing (3 Credits)
+```
+Input: "Help me write a grant proposal for AI research funding"
+Clarification: Asks for applying organization and funding body
+Output:
+- Professional HTML with budget tables
+- Timeline and impact evaluation
+- Official citations (.gov/.edu sources)
+- SMART objectives and methodology
+```
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React Client  │◄──►│  Express Server  │◄──►│  PostgreSQL DB  │
-│                 │    │                  │    │                 │
-│ • Tailwind CSS  │    │ • WebSocket      │    │ • User sessions │
-│ • React Query   │    │ • AI routing     │    │ • Credit system │
-│ • Wouter        │    │ • Rate limiting  │    │ • Admin logs    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                    ┌─────────────────┐
-                    │   AI Services   │
-                    │                 │
-                    │ • Groq          │
-                    │ • Perplexity    │
-                    │ • Anthropic     │
-                    │ • PayPal        │
-                    └─────────────────┘
+sofeia-ai/
+├── client/               # React frontend
+│   ├── src/
+│   │   ├── pages/       # Landing, Chat, Admin, NotFound
+│   │   ├── components/  # UI components
+│   │   └── lib/         # Query client, utilities
+├── server/              # Express backend
+│   ├── services/        # AI router, security, prompts
+│   ├── routes.ts        # API endpoints + WebSocket
+│   ├── storage.ts       # Database operations
+│   └── index.ts         # Server entry point
+├── shared/              # Shared schemas and types
+└── deployment/          # Deployment configurations
 ```
 
-## 🎨 Screenshots
+## 💰 Cost & Revenue
 
-### Landing Page with Credit Purchase
-Professional pricing cards with WhatsApp and PayPal integration
+### Operating Costs (Monthly)
+- **Hosting**: €7-20 (Render/Railway)
+- **Database**: €0-20 (PostgreSQL)
+- **API Usage**: €35-80 (Groq free, Perplexity + Anthropic)
+- **Total**: ~€42-120/month
 
-### AI Chat Interface  
-Real-time chat with comprehensive loading states and HTML-formatted responses
+### Revenue Potential
+- **Starter Plan**: €35/month per customer
+- **Professional Plan**: €300/month per customer
+- **Break-even**: 2-4 customers/month
+
+## 🧪 Testing
+
+### API Test
+```bash
+curl -X POST https://your-app.com/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello", "sessionId": "test-123"}'
+```
 
 ### Admin Panel
-IP-based credit management and usage analytics
+1. Visit `/admin`
+2. Enter admin key: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
+3. Verify unlimited access for IP: `112.198.165.82`
 
-## 🔧 Configuration
+## 🔧 Development
 
-### AI Service Configuration
+```bash
+# Development server
+npm run dev
 
-The app intelligently routes requests based on content analysis:
+# Type checking
+npm run check
 
-```typescript
-// Service routing logic
-const serviceType = analyzeMessage(message);
-switch(serviceType) {
-  case 'general': return await groqService.process(message);
-  case 'research': return await perplexityService.process(message);
-  case 'seo': return await generateSEOContent(message);
-  case 'grant': return await anthropicService.processGrant(message);
-}
+# Database schema push
+npm run db:push
+
+# Build for production
+npm run build
 ```
 
-### Country Detection
-
-```typescript
-const countries = detectCountries(message);
-const sources = prioritizeSources(countries);
-// Automatically targets government domains
-```
-
-## 📊 Analytics & Monitoring
-
-- Real-time credit usage tracking
-- IP-based analytics
-- Payment conversion metrics
-- AI service performance monitoring
-- Admin dashboard with comprehensive logs
-
-## 🛡️ Security
-
-- IP-based access control
-- Session-based authentication  
-- Environment variable security
-- Rate limiting and abuse prevention
-- Admin IP whitelist (112.198.165.82)
-- Secure PayPal integration
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
+## 📞 Support & Contact
 
 **Founder**: Ottmar Francisca  
 **WhatsApp**: +31 628 073 996  
-**PayPal**: https://paypal.me/ojgmedia?country.x=NL&locale.x=en_US
+**PayPal**: https://paypal.me/ojgmedia
 
 **Admin Access**:
-- **Panel**: `/admin`  
 - **Key**: `0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb`
-- **IP**: `112.198.165.82` (Unlimited access)
+- **IP**: `112.198.165.82` (Unlimited)
 
-## 🚀 Roadmap
+## 📄 License
 
-- [ ] User account system
-- [ ] Subscription management
-- [ ] Mobile app (React Native)
-- [ ] API for developers
-- [ ] Multi-language support
-- [ ] Advanced analytics dashboard
-- [ ] White-label solutions
-- [ ] Enterprise features
-
-## 🏆 Acknowledgments
-
-- **AI Providers**: Groq, Perplexity, Anthropic
-- **Payment**: PayPal integration
-- **UI Components**: Radix UI, shadcn/ui
-- **Infrastructure**: Render, PostgreSQL
+MIT License - see LICENSE file for details.
 
 ---
 
-© 2025 Sofeia AI Agent • Built for autonomous AI interactions
-
-**Star this repo** if you find it useful! ⭐
+**Deploy with confidence** - Complete production-ready AI agent platform with professional credit system and advanced SEO optimization.
