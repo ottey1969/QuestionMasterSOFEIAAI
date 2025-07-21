@@ -1,0 +1,50 @@
+SOFEIA AI AGENT v2025 - DEPLOYMENT PACKAGE
+=========================================
+
+📅 Package Created: Mon Jul 21 12:18:09 AM UTC 2025
+👨‍💼 Founder: Ottmar Francisca
+📞 Contact: +31 628 073 996
+💳 PayPal: https://paypal.me/ojgmedia
+
+🚀 FEATURES INCLUDED:
+✅ RankMath SEO Optimization (100/100 score protocol)
+✅ C.R.A.F.T Framework Implementation
+✅ AI Search Engine Optimization (Google AI Overview, Voice Search)
+✅ Elite AI Integration (Groq, Perplexity, Anthropic)
+✅ HTML Structure (H1, H2, H3, H4 headers, active links, tables)
+✅ Smart Country Detection (12+ countries)
+✅ Professional Credit System (€35/month, €300/month)
+✅ Real-time WebSocket Chat
+✅ Copy-Paste Ready Output (CMS, Docs, Notion)
+
+🔧 DEPLOYMENT OPTIONS:
+1. GitHub → Read GITHUB_DEPLOYMENT.md
+2. Render → Use render.yaml (one-click deploy)
+3. Manual → Run deploy.sh script
+
+🔐 REQUIRED ENVIRONMENT VARIABLES:
+- DATABASE_URL (PostgreSQL connection)
+- GROQ_API_KEY (General questions)
+- PERPLEXITY_API_KEY (Research)
+- ANTHROPIC_API_KEY (SEO & Grant writing)
+- PAYPAL_CLIENT_ID & PAYPAL_CLIENT_SECRET
+- SESSION_SECRET (64-character random string)
+
+🏆 ADMIN ACCESS (PRE-CONFIGURED):
+- IP: 112.198.165.82 (Unlimited credits)
+- Admin Key: 0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
+
+📊 CREDIT SYSTEM:
+- 1 Credit: General Knowledge (Groq)
+- 2 Credits: SEO Content (RankMath optimized)
+- 3 Credits: Grant Writing (Professional proposals)
+- 5 Free questions per IP address
+
+🎯 TARGET AUDIENCE:
+- Content creators
+- SEO professionals
+- Grant writers
+- Business owners
+- Digital marketers
+
+© 2025 Sofeia AI Agent - Built for autonomous AI interactions

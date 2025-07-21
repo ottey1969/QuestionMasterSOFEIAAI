@@ -1,36 +1,18 @@
-# Sofeia AI Agent v2025
+# Sofeia AI Agent
 
-> **The World's Most Advanced Autonomous AI Agent with RankMath SEO & C.R.A.F.T Framework**
+> **The World's Most Advanced Autonomous AI Agent**
 
-A production-ready AI-powered platform featuring elite SEO optimization, C.R.A.F.T methodology, AI search engine compatibility, and professional content creation with HTML formatting.
+A production-ready AI-powered platform featuring multi-AI integration, professional credit purchase system, and intelligent country-specific research capabilities.
 
 ![Sofeia AI Agent](https://img.shields.io/badge/AI-Agent-blue?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Production%20Ready-green?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 ## ✨ Features
 
-### 🤖 Elite AI Integration
-- **General Knowledge**: Groq API with HTML structure and C.R.A.F.T framework (1 credit)
-- **SEO Content**: Anthropic with RankMath 100/100 optimization + C.R.A.F.T methodology (2 credits)
-- **Grant Writing**: Anthropic Claude-4-Sonnet with professional HTML proposals (3 credits)
-
-### 🏆 RankMath SEO Optimization
-- **100/100 Score Protocol**: Focus keyword strategy, URL optimization, meta descriptions
-- **Content Structure**: H1/H2/H3 hierarchy, 600-1000 words, 1-2% keyword density
-- **Link Requirements**: External dofollow + internal linking for SEO juice
-- **HTML Excellence**: Professional headers, active links, inline CSS tables
-
-### 🚀 C.R.A.F.T Framework Implementation
-- **Cut the Fluff**: Value-driven, concise content creation
-- **Review & Optimize**: Fact-checked statistics, optimized keyword placement
-- **Add Visuals**: Data tables, comparison charts, structured lists
-- **Fact-Check**: Verified claims with .gov/.edu sources
-- **Trust-Build**: Author credentials, source transparency
-
-### 🔍 AI Search Engine Optimization
-- **Google AI Overview**: Featured snippet structure, position zero targeting
-- **Voice Search**: Natural language patterns, conversational queries
-- **Semantic Signals**: LSI keywords, topic clusters, entity relationships
-- **E-E-A-T Excellence**: Expertise, Experience, Authoritativeness, Trustworthiness
+### 🤖 Multi-AI Integration
+- **General Questions**: Groq API with Mixtral for lightning-fast responses (1 credit)
+- **Research & Citations**: Perplexity API with smart country targeting (1 credit)  
+- **SEO Content**: Perplexity research + Anthropic content generation (2 credits)
+- **Grant Writing**: Anthropic Claude-4-Sonnet for professional proposals (3 credits)
 
 ### 💳 Professional Credit System
 - **Starter Plan**: €35/month for 150 questions

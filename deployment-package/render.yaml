@@ -1,0 +1,47 @@
+# Render Blueprint - Sofeia AI Agent
+# Deploy with one click: https://render.com/deploy
+
+services:
+  - type: web
+    name: sofeia-ai-agent
+    env: node
+    region: frankfurt  # EU region for GDPR compliance
+    plan: starter  # $7/month - upgrade to standard for production
+    buildCommand: npm run build
+    startCommand: npm start
+    repo: https://github.com/yourusername/sofeia-ai.git
+    branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true  # Render will generate a secure random string
+      - key: GROQ_API_KEY
+        sync: false  # Must be set manually
+      - key: PERPLEXITY_API_KEY  
+        sync: false  # Must be set manually
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Must be set manually
+      - key: PAYPAL_CLIENT_ID
+        sync: false  # Must be set manually
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false  # Must be set manually
+      - key: ADMIN_KEY
+        value: 0f5db72a966a8d5f7ebae96c6a1e2cc574c2bf926c62dc4526bd43df1c0f42eb
+      - key: ADMIN_IP_ADDRESS
+        value: 112.198.165.82
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sofeia-ai-database
+          property: connectionString
+    autoDeploy: true
+    healthCheckPath: /health
+
+  - type: pserv
+    name: sofeia-ai-database
+    env: postgresql
+    region: frankfurt
+    plan: starter  # $20/month - includes backups and monitoring
+    databaseName: sofeia_ai
+    databaseUser: sofeia_user
+    ipAllowList: []  # Empty = allow all (Render services can connect)
