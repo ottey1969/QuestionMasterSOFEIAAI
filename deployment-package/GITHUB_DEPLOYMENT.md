@@ -6,14 +6,15 @@ Complete deployment guide for Sofeia AI Agent with advanced SEO optimization, C.
 
 **Sofeia AI Agent** is a production-ready autonomous AI platform featuring:
 - **Elite AI Integration**: Groq (1-credit), Perplexity + Anthropic (2-credit SEO), Anthropic (3-credit grants)
-- **RankMath SEO Optimization**: 100/100 score protocol with complete HTML structure
-- **C.R.A.F.T Framework**: Cut fluff, Review/optimize, Add visuals, Fact-check, Trust-build
+- **Professional AI Prompts**: Enhanced global grant writing + comprehensive SEO content strategist with E-E-A-T optimization
+- **RankMath SEO Optimization**: 100/100 score protocol with complete HTML structure and schema markup
+- **C.R.A.F.T Framework**: Cut fluff, Review/optimize, Add media, Fact-check, Trust-build methodology across all services
 - **AI Search Engine Ready**: Google AI Overview, Voice Search, Featured Snippets optimization
 - **Professional Credit System**: €35/month (150 questions) and €300/month (1500 questions)
 - **Smart Country Detection**: Prioritizes government sources (India: gov.in, USA: .gov, UK: .gov.uk)
-- **Real-time Chat**: WebSocket-based with comprehensive loading states
-- **IP-Based Access**: 5 free questions per IP with admin controls
-- **PayPal Integration**: Direct payment links for credit purchases
+- **Real-time Chat**: WebSocket-based with comprehensive loading states and interactive thinking indicators
+- **IP-Based Access**: 5 free questions per IP with admin controls (IP: 112.198.165.82 = unlimited)
+- **PayPal Integration**: Direct payment links for credit purchases and admin support
 
 ## 📋 Prerequisites
 

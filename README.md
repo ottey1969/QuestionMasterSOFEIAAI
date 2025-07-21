@@ -10,8 +10,8 @@ A production-ready AI-powered platform featuring elite SEO optimization, C.R.A.F
 
 ### 🤖 Elite AI Integration
 - **General Knowledge**: Groq API with HTML structure and C.R.A.F.T framework (1 credit)
-- **SEO Content**: Anthropic with RankMath 100/100 optimization + C.R.A.F.T methodology (2 credits)
-- **Grant Writing**: Anthropic Claude-4-Sonnet with professional HTML proposals (3 credits)
+- **SEO Content**: Professional SEO content strategist with E-E-A-T optimization, RankMath 100/100 scoring, structured data implementation (2 credits)
+- **Grant Writing**: Comprehensive global grant writer with UN SDG alignment, international standards, professional proposal structure (3 credits)
 
 ### 🏆 RankMath SEO Optimization
 - **100/100 Score Protocol**: Focus keyword strategy, URL optimization, meta descriptions
